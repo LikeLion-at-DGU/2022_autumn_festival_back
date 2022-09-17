@@ -32,6 +32,12 @@ public class Booth {
     @NotNull
     private String introduction;
 
+    @NotNull
+    private String startAt;
+
+    @NotNull
+    private String endAt;
+
     /*
     TODO : 이미지 필드 추가
      */
