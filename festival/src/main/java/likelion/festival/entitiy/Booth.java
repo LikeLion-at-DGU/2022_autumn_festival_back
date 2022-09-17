@@ -21,9 +21,11 @@ public class Booth {
 
     private String notice;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private BoothType boothType;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     private BoothLocation boothLocation;
 
