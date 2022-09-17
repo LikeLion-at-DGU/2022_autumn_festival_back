@@ -27,5 +27,7 @@ public class Booth {
     @Enumerated(EnumType.STRING)
     private BoothLocation boothLocation;
 
-
+    /*
+    TODO : 이미지 필드 추가
+     */
 }
