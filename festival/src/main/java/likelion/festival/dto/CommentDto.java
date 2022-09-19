@@ -17,9 +17,7 @@ public class CommentDto {
 
     private Long id;
 
-    private String nickname;
-
-    private String password;
+    private String writer;
 
     private LocalDateTime createdDateTime;
 
