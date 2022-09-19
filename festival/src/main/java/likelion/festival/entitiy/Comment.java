@@ -13,12 +13,12 @@ import javax.persistence.*;
 @Table(name = "comment")
 @Builder
 @Entity
-public class Comment {
+public class Comment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nickname;
+    private String writer;
 
     private String password;
 
