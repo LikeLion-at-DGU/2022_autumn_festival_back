@@ -19,6 +19,8 @@ public class CommentDto {
 
     private String writer;
 
+    private String password;
+
     private LocalDateTime createdDateTime;
 
     //private Booth booth;
