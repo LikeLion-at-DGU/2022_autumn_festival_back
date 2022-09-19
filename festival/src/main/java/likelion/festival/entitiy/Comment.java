@@ -24,9 +24,5 @@ public class Comment extends BaseEntity {
 
     private String content;
 
-    // Booth
-//    @ManyToOne(targetEntity = Booth.class, fetch = FetchType.LAZY)
-//    @JoinColumn(name = "booth_id")
-//    private Booth booth;
 
 }

@@ -1,9 +1,12 @@
 package likelion.festival.security;
 
+import org.springframework.stereotype.Component;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+@Component
 public class Encrypt {
     public String getSalt(){
         SecureRandom sr = new SecureRandom();

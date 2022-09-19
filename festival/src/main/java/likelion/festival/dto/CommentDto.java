@@ -21,6 +21,8 @@ public class CommentDto {
 
     private String password;
 
+    private String content;
+
     private LocalDateTime createdDateTime;
 
     //private Booth booth;
