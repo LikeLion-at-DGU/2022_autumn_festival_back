@@ -1,11 +1,19 @@
 package likelion.festival.entitiy;
 
 import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class Booth {
 
@@ -14,7 +22,7 @@ public class Booth {
     private Long id;
 
     @NotNull
-    private String Title;
+    private String title;
 
     @NotNull
     private String content;
