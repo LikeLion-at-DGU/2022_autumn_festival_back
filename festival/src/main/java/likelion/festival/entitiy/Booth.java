@@ -46,6 +46,9 @@ public class Booth {
     @NotNull
     private String endAt;
 
+    @OneToMany(mappedBy = "booth")
+    private List<Likes> likes = new ArrayList<>();
+
     /*
     TODO : 이미지, like, comment 필드 추가
      */
