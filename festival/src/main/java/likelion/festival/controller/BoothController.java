@@ -33,7 +33,7 @@ public class BoothController {
     }
 
     @PostMapping()
-    public Integer boothCreate(BoothDto boothDto) {
+    public Integer boothCreate(@RequestBody BoothDto boothDto) {
         return boothService.create(boothDto);
     }
 
@@ -43,7 +43,7 @@ public class BoothController {
     }
 
     @PutMapping("{id}")
-    public Booth boothUpdate(@PathVariable Long id, BoothDto boothDto) {
+    public Booth boothUpdate(@PathVariable Long id, @RequestBody BoothDto boothDto) {
         return boothService.update(id, boothDto);
     }
 
