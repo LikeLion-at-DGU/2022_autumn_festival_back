@@ -5,23 +5,22 @@ import likelion.festival.entitiy.BoothLocation;
 import likelion.festival.entitiy.BoothType;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NonNull;
 
 @Builder
 @Data
 public class BoothDto {
     private Long id;
 
-    @NonNull
+    @NotNull
     private String title;
 
-    @NonNull
+    @NotNull
     private String introduction;
 
     @NotNull
     private BoothType boothType;
 
-    @NonNull
+    @NotNull
     private BoothLocation boothLocation;
 
     private String notice;
@@ -29,7 +28,7 @@ public class BoothDto {
     @NotNull
     private String content;
 
-    @NonNull
+    @NotNull
     private String startAt;
 
     @NotNull
