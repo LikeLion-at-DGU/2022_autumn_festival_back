@@ -7,6 +7,7 @@ import likelion.festival.entitiy.BoothLocation;
 import likelion.festival.exception.WrongBoothId;
 import likelion.festival.repository.BoothRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +48,7 @@ public class BoothService {
     }
 
     //생성
+    @Transactional
     public Integer create(BoothDto boothDto) {
         Booth booth = boothDtoToEntity(boothDto);
         boothRepository.save(booth);
@@ -78,6 +80,7 @@ public class BoothService {
     }
 
     //삭제
+    @Transactional
     public Integer delete(Long id) {
         Optional<Booth> booth = boothRepository.findById(id);
         if (!booth.isPresent()) {
@@ -102,7 +105,6 @@ public class BoothService {
 
     Booth boothDtoToEntity(BoothDto boothDto) {
         return Booth.builder()
-                .id(boothDto.getId())
                 .title(boothDto.getTitle())
                 .introduction(boothDto.getIntroduction())
                 .boothType(boothDto.getBoothType())
