@@ -1,11 +1,19 @@
 package likelion.festival.entitiy;
 
 import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 @Entity
 public class Booth {
 
@@ -14,7 +22,7 @@ public class Booth {
     private Long id;
 
     @NotNull
-    private String Title;
+    private String title;
 
     @NotNull
     private String content;
@@ -38,7 +46,13 @@ public class Booth {
     @NotNull
     private String endAt;
 
+    @OneToMany(mappedBy = "booth")
+    private List<Menu> menuList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "booth")
+    private List<Likes> likes = new ArrayList<>();
+
     /*
-    TODO : 이미지 필드 추가
+    TODO : 이미지, comment 필드 추가
      */
 }
