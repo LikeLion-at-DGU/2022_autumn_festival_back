@@ -53,6 +53,6 @@ public class Booth {
     private List<Likes> likes = new ArrayList<>();
 
     /*
-    TODO : 이미지, like, comment 필드 추가
+    TODO : 이미지, comment 필드 추가
      */
 }
