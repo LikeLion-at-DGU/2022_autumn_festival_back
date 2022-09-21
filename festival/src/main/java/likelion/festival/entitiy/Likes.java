@@ -21,7 +21,8 @@ public class Likes {
     @NotNull
     private String cookie_key;
 
-    @ManyToOne @NotNull
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booth_id")
     private Booth booth;
 }

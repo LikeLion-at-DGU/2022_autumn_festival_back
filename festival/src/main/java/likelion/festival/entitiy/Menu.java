@@ -24,7 +24,8 @@ public class Menu {
     @NotNull
     private Long price;
 
-    @ManyToOne @NotNull
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booth_id")
     private Booth booth;
 }
