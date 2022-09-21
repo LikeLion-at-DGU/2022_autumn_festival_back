@@ -1,12 +1,11 @@
 package likelion.festival.entitiy;
 
 import com.sun.istack.NotNull;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@NoArgsConstructor
 @Entity
 @NoArgsConstructor
 public class Notification extends BaseEntity{
@@ -21,6 +20,11 @@ public class Notification extends BaseEntity{
     private String content;
     @Enumerated(EnumType.ORDINAL)
     private NotificationType notificationType;
+
+
+
+
+
     /*
         TODO : 이미지 필드 추가
     */
