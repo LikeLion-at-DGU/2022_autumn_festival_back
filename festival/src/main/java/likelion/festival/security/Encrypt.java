@@ -8,23 +8,12 @@ import java.security.SecureRandom;
 
 @Component
 public class Encrypt {
-    public String getSalt(){
-        SecureRandom sr = new SecureRandom();
-        byte[] salt = new byte[20];
 
-        sr.nextBytes(salt);
-
-        StringBuffer sb = new StringBuffer();
-        for (byte b : salt) {
-            sb.append(String.format("%02x", b));
-        }
-        return sb.toString();
-    }
-    public String getEncrypt(String pwd, String salt){
+    public String getEncrypt(String pwd){
         StringBuilder sb = new StringBuilder();
         try{
             MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update((pwd+salt).getBytes());
+            md.update((pwd).getBytes());
             byte[] pwsalt = md.digest();
 
             for (byte b : pwsalt) {
