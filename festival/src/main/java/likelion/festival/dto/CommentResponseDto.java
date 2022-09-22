@@ -1,11 +1,8 @@
 package likelion.festival.dto;
 
+import likelion.festival.entitiy.Booth;
 import lombok.*;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -13,17 +10,14 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentDto {
-
+public class CommentResponseDto {
     private Long id;
 
     private String writer;
 
-    private String password;
 
     private String content;
 
     private LocalDateTime createdDateTime;
 
-    //private Booth booth;
 }
