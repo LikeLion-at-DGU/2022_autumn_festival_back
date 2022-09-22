@@ -6,7 +6,6 @@ import likelion.festival.entitiy.BoothType;
 import lombok.Builder;
 import lombok.Data;
 
-@Builder
 @Data
 public class BoothDto {
     private Long id;
@@ -33,6 +32,22 @@ public class BoothDto {
 
     @NotNull
     private String endAt;
+
+    private Long imageId;
+
+    @Builder
+    public BoothDto(Long id, String title, String introduction, BoothType boothType, BoothLocation boothLocation, String notice, String content, String startAt, String endAt, Long imageId) {
+        this.id = id;
+        this.title = title;
+        this.introduction = introduction;
+        this.boothType = boothType;
+        this.boothLocation = boothLocation;
+        this.notice = notice;
+        this.content = content;
+        this.startAt = startAt;
+        this.endAt = endAt;
+        this.imageId = imageId;
+    }
 
     //TODO : 위치 이미지, 이미지 필드 추가
 }
