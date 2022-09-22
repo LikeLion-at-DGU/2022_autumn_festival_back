@@ -1,11 +1,11 @@
 package likelion.festival.controller;
 
-import likelion.festival.dto.BoothDto;
-import likelion.festival.dto.BoothFilterDto;
+import likelion.festival.dto.*;
 import likelion.festival.entitiy.Booth;
 import likelion.festival.entitiy.BoothLocation;
 import likelion.festival.entitiy.Likes;
 import likelion.festival.service.BoothService;
+import likelion.festival.service.CommentService;
 import likelion.festival.service.LikesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +22,7 @@ public class BoothController {
 
     private final BoothService boothService;
     private final LikesService likesService;
+    private final CommentService commentService;
 
     @GetMapping(params = {"filter"})
     public List<BoothFilterDto> boothFilter(@RequestParam BoothLocation filter) {
@@ -87,6 +88,27 @@ public class BoothController {
         }
     }
 
-    // TODO : menu, comment controller 추가하기
+    @PostMapping("{id}/comments")
+    public CommentResponseDto createComment(@PathVariable Long id, @RequestBody CommentRequestDto commentRequestDto){
+        return commentService.create(id, commentRequestDto);
+    }
 
+    @DeleteMapping("{id}/comments/{comment_id}")
+    public String deleteComment(@PathVariable Long id, @PathVariable Long comment_id, @RequestBody
+            CommentPasswordDto password){
+        return commentService.delete(comment_id, password);
+    }
+
+    @DeleteMapping("{id}/comments/{comment_id}/force")
+    public String deleteForceComment(@PathVariable Long id, @PathVariable Long comment_id){
+        return commentService.force_delete(comment_id);
+    }
+
+    @GetMapping("{id}/comments")
+    public List<CommentResponseDto> getCommentList(@PathVariable Long id){
+        return commentService.getAll(id);
+    }
+
+
+    // TODO : menu controller 추가하기
 }

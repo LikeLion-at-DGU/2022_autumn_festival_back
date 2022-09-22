@@ -1,5 +1,6 @@
 package likelion.festival.entitiy;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -55,7 +56,7 @@ public class Booth {
     @OneToMany(mappedBy = "booth")
     private List<Image> images = new ArrayList<>();
 
-    /*
-    TODO :  comment 필드 추가
-     */
+    @JsonManagedReference
+    @OneToMany(mappedBy = "booth")
+    private List<Comment> comments = new ArrayList<>();
 }

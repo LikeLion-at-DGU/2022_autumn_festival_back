@@ -1,5 +1,6 @@
 package likelion.festival.entitiy;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,5 +29,9 @@ public class Comment extends BaseEntity {
     @NotNull
     private String content;
 
-
+    @NotNull
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "booth_id")
+    private Booth booth;
 }
