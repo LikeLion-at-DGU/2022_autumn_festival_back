@@ -6,6 +6,9 @@ import likelion.festival.dto.CommentRequestDto;
 import likelion.festival.dto.CommentResponseDto;
 import likelion.festival.entitiy.Booth;
 import likelion.festival.entitiy.Comment;
+import likelion.festival.exception.WrongBoothId;
+import likelion.festival.exception.WrongCommentId;
+import likelion.festival.exception.WrongPassword;
 import likelion.festival.repository.BoothRepository;
 import likelion.festival.repository.CommentRepository;
 import likelion.festival.security.Encrypt;
@@ -32,7 +35,7 @@ public class CommentService {
     public List<CommentResponseDto> getAll(Long boothId){
         Optional<Booth> byId = boothRepository.findById(boothId);
         if(byId.isEmpty()){
-            throw  new IllegalArgumentException("해당 ID의 부스가 없습니다.");
+            throw  new WrongBoothId();
         }
         Booth booth = byId.get();
         List<Comment> comments = booth.getComments();
@@ -42,11 +45,8 @@ public class CommentService {
     @Transactional
     public CommentResponseDto create(Long boothId, CommentRequestDto commentRequestDto){
         Optional<Booth> byId = boothRepository.findById(boothId);
-        /*
-        TODO : 예외 클래스 변경
-         */
         if(byId.isEmpty()){
-            throw new IllegalArgumentException("해당 ID의 부스 없음");
+            throw  new WrongBoothId();
         }
         Booth booth = byId.get();
         commentRequestDto.setBooth(booth);
@@ -59,11 +59,12 @@ public class CommentService {
     public String delete(Long commentId, CommentPasswordDto password){
         Optional<Comment> byId = commentRepository.findById(commentId);
         if(byId.isEmpty()){
-            throw new IllegalArgumentException("해당 ID의 방명록 없음");
+            throw new WrongCommentId();
         }
         Comment comment = byId.get();
         if(!comment.getPassword().equals(getEncPwd(password.getPassword()))){
-            throw new IllegalArgumentException("비밀번호 다름");}
+            throw new WrongPassword();
+        }
         commentRepository.deleteById(commentId);
         return "Ok";
     }
@@ -72,7 +73,7 @@ public class CommentService {
     public String force_delete(Long commentId){
         Optional<Comment> byId = commentRepository.findById(commentId);
         if(byId.isEmpty()){
-            throw new IllegalArgumentException("해당 ID의 방명록 없음");
+            throw new WrongCommentId();
         }
         commentRepository.deleteById(commentId);
         return "Ok";
