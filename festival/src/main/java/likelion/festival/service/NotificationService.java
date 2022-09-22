@@ -22,12 +22,25 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
 
 
-    public Notification readNotification(Long id){
-        Optional<Notification> notification = notificationRepository.findById(id);
-        if (!notification.isPresent()){
+    public NotificationDto readNotification(Long id){
+        Optional<Notification> notificationOptional = notificationRepository.findById(id);
+        if (!notificationOptional.isPresent()){
             throw new EntityNotFoundException("해당 공지사항이 없습니다");
         }
-        return notification.get();
+
+        Notification notification = notificationOptional.get();
+
+        NotificationDto notificationDto = NotificationDto.builder()
+                .id(notification.getId())
+                .title(notification.getTitle())
+                .writer(notification.getWriter())
+                .content(notification.getContent())
+                .notificationType(notification.getNotificationType())
+                .imageId(notification.getImageId())
+                .createdDateTime(notification.getCreatedDateTime())
+                .modifiedDateTime(notification.getModifiedDateTime())
+                .build();
+        return notificationDto;
     }
 
 
