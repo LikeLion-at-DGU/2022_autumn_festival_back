@@ -21,7 +21,7 @@ public class LikesService {
 
     public Likes create(Long id){
         Optional<Booth> booth = boothRepository.findById(id);
-        if (!booth.isEmpty()){
+        if (!booth.isPresent()){
             throw new WrongBoothId();
         }
         String newCookieKey = createCookieKey();
@@ -32,22 +32,22 @@ public class LikesService {
     }
 
     public void delete(Long boothId, String cookieKey) {
-        Optional<Likes> likes = likesRepository.findByCookieKey(cookieKey);
         Optional<Booth> booth = boothRepository.findById(boothId);
         if (!booth.isPresent()) {
             throw new WrongBoothId();
         }
+        Optional<Likes> likes = likesRepository.findByCookieKey(cookieKey);
         if (!likes.isPresent()){
             throw new WrongLikesKey();
         }
-        boothRepository.deleteById(likes.get().getId());
+        likesRepository.deleteById(likes.get().getId());
     }
 
     private String createCookieKey(){
         while (true) {
             String cookieKey = createRandomString();
             Optional<Likes> likes = likesRepository.findByCookieKey(cookieKey);
-            if (likes.isPresent()){
+            if (!likes.isPresent()){
                 return cookieKey;
             }
         }
