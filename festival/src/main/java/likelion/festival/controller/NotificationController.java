@@ -54,7 +54,7 @@ public class NotificationController {
                     e.getStackTrace();
                 }
             }
-            String imagePath = savePath + "/" + servFilename;
+            String imagePath = savePath + "/" + servFilename+".jpg";
             images.transferTo(new File(imagePath));
 
             ImageDto imageDto = new ImageDto();
