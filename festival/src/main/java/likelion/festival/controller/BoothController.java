@@ -4,10 +4,15 @@ import likelion.festival.dto.BoothDto;
 import likelion.festival.dto.BoothFilterDto;
 import likelion.festival.entitiy.Booth;
 import likelion.festival.entitiy.BoothLocation;
+import likelion.festival.entitiy.Likes;
 import likelion.festival.service.BoothService;
+import likelion.festival.service.LikesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -16,6 +21,7 @@ import java.util.List;
 public class BoothController {
 
     private final BoothService boothService;
+    private final LikesService likesService;
 
     @GetMapping(params = {"filter"})
     public List<BoothFilterDto> boothFilter(@RequestParam BoothLocation filter) {
@@ -52,6 +58,35 @@ public class BoothController {
         return boothService.delete(id);
     }
 
-    // TODO : like, menu, comment controller 추가하기
+    @PostMapping("/{id}/likes")
+    public void likeCreate(@PathVariable Long id, HttpServletResponse response){
+        Likes likes = likesService.create(id);
+        Cookie keyCookie = new Cookie(id.toString(), likes.getCookieKey());
+        keyCookie.setMaxAge(7 * 60 * 60 * 24);
+        keyCookie.setPath("/");
+        response.addCookie(keyCookie);
+    }
+
+    @DeleteMapping("/{id}/likes")
+    public void likeDelete(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response){
+        Cookie[] userCookies = request.getCookies();
+        Boolean complete = false;
+        for (Cookie userCookie : userCookies) {
+            if (userCookie.getName().equals(id.toString())) {
+                String cookieKey = userCookie.getValue();
+                likesService.delete(id, cookieKey);
+                Cookie keyCookie = new Cookie(id.toString(), null);
+                keyCookie.setMaxAge(0);
+                keyCookie.setPath("/");
+                response.addCookie(keyCookie);
+                complete = true;
+            }
+        }
+        if (!complete){
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
+
+    // TODO : menu, comment controller 추가하기
 
 }
