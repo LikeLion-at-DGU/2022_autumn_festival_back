@@ -113,6 +113,7 @@ public class BoothService {
                 .content(boothDto.getContent())
                 .startAt(boothDto.getStartAt())
                 .endAt(boothDto.getEndAt())
+정                .imageId(boothDto.getImageId())
                 //TODO : 위치 이미지와 소개 이미지 추가
                 .build();
     }
@@ -128,6 +129,7 @@ public class BoothService {
                 .content(booth.getContent())
                 .startAt(booth.getStartAt())
                 .endAt(booth.getEndAt())
+                .imageId(booth.getImageId())
                 //TODO : 위치 이미지와 소개 이미지 추가
                 .build();
     }
