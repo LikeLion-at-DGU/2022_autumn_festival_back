@@ -52,8 +52,7 @@ public class Booth {
     @OneToMany(mappedBy = "booth")
     private List<Likes> likes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "booth")
-    private List<Image> images = new ArrayList<>();
+    private Long imageId;
 
     /*
     TODO :  comment 필드 추가
