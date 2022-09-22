@@ -1,23 +1,31 @@
 package likelion.festival.controller;
 
+import likelion.festival.dto.ImageDto;
 import likelion.festival.dto.NotificationDto;
+import likelion.festival.entitiy.Image;
 import likelion.festival.entitiy.Notification;
 import likelion.festival.entitiy.NotificationType;
+import likelion.festival.service.ImageService;
 import likelion.festival.service.NotificationService;
+import likelion.festival.util.MD5Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
 
 @RestController
 @RequestMapping(value = "/api/notifications")
 @RequiredArgsConstructor
 public class NotificationController {
     private final NotificationService notificationService;
+    private final ImageService imageService;
 
     @GetMapping("{id}")
-    public ResponseEntity<Notification> readNotification(@PathVariable Long id){
-        return ResponseEntity.ok(notificationService.readNotification(id));
+    public NotificationDto readNotification(@PathVariable Long id){
+        return notificationService.readNotification(id);
     }
 
     @GetMapping
@@ -26,8 +34,41 @@ public class NotificationController {
     }
 
     @PostMapping
-    public Integer createNotification(@RequestBody NotificationDto request){
-        return notificationService.createNotification(request);
+    public Integer createNotification(@RequestPart(value = "images",required = false) MultipartFile images, @RequestParam(value = "notification") NotificationDto notificationDto){
+        if (images==null){
+            notificationService.createNotification(notificationDto);
+            return HttpStatus.OK.value();
+        }
+        try {
+            String origFilename = images.getOriginalFilename();
+            String servFilename = new MD5Generator(origFilename).toString();
+
+            String savePath =System.getProperty("user.dir")+"/files";
+
+
+            if (!new File(savePath).exists()){
+                try {
+                    new File(savePath).mkdir();
+                }
+                catch (Exception e){
+                    e.getStackTrace();
+                }
+            }
+            String imagePath = savePath + "/" + servFilename;
+            images.transferTo(new File(imagePath));
+
+            ImageDto imageDto = new ImageDto();
+            imageDto.setOrigin_file_name(origFilename);
+            imageDto.setServer_file_name(servFilename);
+            imageDto.setStored_file_path(imagePath);
+
+            Long imageId = imageService.saveImage(imageDto);
+            notificationDto.setImageId(imageId);
+            notificationService.createNotification(notificationDto);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return HttpStatus.OK.value();
     }
 
     @DeleteMapping("{id}")
