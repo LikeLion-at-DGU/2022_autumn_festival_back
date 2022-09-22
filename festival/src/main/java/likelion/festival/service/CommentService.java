@@ -32,10 +32,10 @@ public class CommentService {
     private final Encrypt encrypt;
 
 
-    public List<CommentResponseDto> getAll(Long boothId){
+    public List<CommentResponseDto> getAll(Long boothId) {
         Optional<Booth> byId = boothRepository.findById(boothId);
-        if(byId.isEmpty()){
-            throw  new WrongBoothId();
+        if (byId.isEmpty()) {
+            throw new WrongBoothId();
         }
         Booth booth = byId.get();
         List<Comment> comments = booth.getComments();
@@ -43,10 +43,10 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentResponseDto create(Long boothId, CommentRequestDto commentRequestDto){
+    public CommentResponseDto create(Long boothId, CommentRequestDto commentRequestDto) {
         Optional<Booth> byId = boothRepository.findById(boothId);
-        if(byId.isEmpty()){
-            throw  new WrongBoothId();
+        if (byId.isEmpty()) {
+            throw new WrongBoothId();
         }
         Booth booth = byId.get();
         commentRequestDto.setBooth(booth);
@@ -56,13 +56,13 @@ public class CommentService {
     }
 
     @Transactional
-    public String delete(Long commentId, CommentPasswordDto password){
+    public String delete(Long commentId, CommentPasswordDto password) {
         Optional<Comment> byId = commentRepository.findById(commentId);
-        if(byId.isEmpty()){
+        if (byId.isEmpty()) {
             throw new WrongCommentId();
         }
         Comment comment = byId.get();
-        if(!comment.getPassword().equals(getEncPwd(password.getPassword()))){
+        if (!comment.getPassword().equals(getEncPwd(password.getPassword()))) {
             throw new WrongPassword();
         }
         commentRepository.deleteById(commentId);
@@ -70,9 +70,9 @@ public class CommentService {
     }
 
     @Transactional
-    public String force_delete(Long commentId){
+    public String force_delete(Long commentId) {
         Optional<Comment> byId = commentRepository.findById(commentId);
-        if(byId.isEmpty()){
+        if (byId.isEmpty()) {
             throw new WrongCommentId();
         }
         commentRepository.deleteById(commentId);
@@ -80,7 +80,7 @@ public class CommentService {
     }
 
 
-    public Comment dtoToEntity(CommentRequestDto commentRequestDto){
+    public Comment dtoToEntity(CommentRequestDto commentRequestDto) {
         String enc_pwd = getEncPwd(commentRequestDto.getPassword());
 
         return Comment.builder()
@@ -91,12 +91,11 @@ public class CommentService {
                 .build();
     }
 
-
     private String getEncPwd(String password) {
         return this.encrypt.getEncrypt(password);
     }
 
-    public CommentResponseDto entityToDto(Comment comment){
+    public CommentResponseDto entityToDto(Comment comment) {
         return CommentResponseDto.builder()
                 .id(comment.getId())
                 .writer(comment.getWriter())
@@ -105,7 +104,7 @@ public class CommentService {
                 .build();
     }
 
-    private List<CommentResponseDto> getDtoList(List<Comment> all){
+    private List<CommentResponseDto> getDtoList(List<Comment> all) {
         return all.stream().map(comment -> entityToDto(comment))
                 .collect(Collectors.toList());
     }
