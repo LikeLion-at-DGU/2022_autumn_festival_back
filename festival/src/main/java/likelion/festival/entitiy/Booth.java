@@ -44,6 +44,8 @@ public class Booth {
     @NotNull
     private String startAt;
 
+    private Long imageId;
+
     @NotNull
     private String endAt;
 
@@ -53,8 +55,6 @@ public class Booth {
     @OneToMany(mappedBy = "booth")
     private List<Likes> likes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "booth")
-    private List<Image> images = new ArrayList<>();
 
     @JsonManagedReference
     @OneToMany(mappedBy = "booth")
