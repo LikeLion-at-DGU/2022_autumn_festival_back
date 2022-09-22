@@ -19,6 +19,9 @@ public class Notification extends BaseEntity{
     private String writer;
     @NotNull
     private String content;
+
+    private Long imageId;
+
     @Enumerated(EnumType.ORDINAL)
     private NotificationType notificationType;
 
