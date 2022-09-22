@@ -23,9 +23,6 @@ public class Image {
 
     private long file_size;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "booth_id")
-    private Booth booth;
 
     @Builder
     public Image(Long id, String origin_file_name, String server_file_name, String stored_file_path) {
