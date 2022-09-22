@@ -1,13 +1,12 @@
 package likelion.festival.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import likelion.festival.entitiy.Booth;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Data
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,4 +19,5 @@ public class CommentResponseDto {
     private String content;
 
     private LocalDateTime createdDateTime;
+
 }

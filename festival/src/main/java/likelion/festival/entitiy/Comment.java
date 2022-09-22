@@ -32,6 +32,6 @@ public class Comment extends BaseEntity {
     @NotNull
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "booth_id")
     private Booth booth;
 }

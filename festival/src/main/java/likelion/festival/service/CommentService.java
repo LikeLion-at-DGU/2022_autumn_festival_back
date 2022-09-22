@@ -1,5 +1,9 @@
 package likelion.festival.service;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/feature/15
 import likelion.festival.dto.CommentPasswordDto;
 import likelion.festival.dto.CommentRequestDto;
 import likelion.festival.dto.CommentResponseDto;
@@ -30,9 +34,16 @@ public class CommentService {
     private final BoothRepository boothRepository;
     private final Encrypt encrypt;
 
+<<<<<<< HEAD
     public List<CommentResponseDto> getAll(Long boothId){
         Optional<Booth> byId = boothRepository.findById(boothId);
         if(byId.isEmpty()){
+=======
+
+    public List<CommentResponseDto> getAll(Long boothId) {
+        Optional<Booth> byId = boothRepository.findById(boothId);
+        if (byId.isEmpty()) {
+>>>>>>> origin/feature/15
             throw new WrongBoothId();
         }
         Booth booth = byId.get();
@@ -41,10 +52,16 @@ public class CommentService {
     }
 
     @Transactional
+<<<<<<< HEAD
     public CommentResponseDto create(Long boothId, CommentRequestDto commentRequestDto){
         Optional<Booth> byId = boothRepository.findById(boothId);
 
         if(byId.isEmpty()){
+=======
+    public CommentResponseDto create(Long boothId, CommentRequestDto commentRequestDto) {
+        Optional<Booth> byId = boothRepository.findById(boothId);
+        if (byId.isEmpty()) {
+>>>>>>> origin/feature/15
             throw new WrongBoothId();
         }
         Booth booth = byId.get();
@@ -55,6 +72,7 @@ public class CommentService {
     }
 
     @Transactional
+<<<<<<< HEAD
     public String delete(Long commentId, CommentPasswordDto password){
         Optional<Comment> byId = commentRepository.findById(commentId);
         if(byId.isEmpty()){
@@ -63,14 +81,31 @@ public class CommentService {
         Comment comment = byId.get();
         if(!comment.getPassword().equals(getEncPwd(password.getPassword()))){
             throw new WrongPassword();}
+=======
+    public String delete(Long commentId, CommentPasswordDto password) {
+        Optional<Comment> byId = commentRepository.findById(commentId);
+        if (byId.isEmpty()) {
+            throw new WrongCommentId();
+        }
+        Comment comment = byId.get();
+        if (!comment.getPassword().equals(getEncPwd(password.getPassword()))) {
+            throw new WrongPassword();
+        }
+>>>>>>> origin/feature/15
         commentRepository.deleteById(commentId);
         return "Ok";
     }
 
     @Transactional
+<<<<<<< HEAD
     public String force_delete(Long commentId){
         Optional<Comment> byId = commentRepository.findById(commentId);
         if(byId.isEmpty()){
+=======
+    public String force_delete(Long commentId) {
+        Optional<Comment> byId = commentRepository.findById(commentId);
+        if (byId.isEmpty()) {
+>>>>>>> origin/feature/15
             throw new WrongCommentId();
         }
         commentRepository.deleteById(commentId);
@@ -78,7 +113,11 @@ public class CommentService {
     }
 
 
+<<<<<<< HEAD
     public Comment dtoToEntity(CommentRequestDto commentRequestDto){
+=======
+    public Comment dtoToEntity(CommentRequestDto commentRequestDto) {
+>>>>>>> origin/feature/15
         String enc_pwd = getEncPwd(commentRequestDto.getPassword());
 
         return Comment.builder()
@@ -89,12 +128,19 @@ public class CommentService {
                 .build();
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/feature/15
     private String getEncPwd(String password) {
         return this.encrypt.getEncrypt(password);
     }
 
+<<<<<<< HEAD
     public CommentResponseDto entityToDto(Comment comment){
+=======
+    public CommentResponseDto entityToDto(Comment comment) {
+>>>>>>> origin/feature/15
         return CommentResponseDto.builder()
                 .id(comment.getId())
                 .writer(comment.getWriter())
@@ -103,8 +149,16 @@ public class CommentService {
                 .build();
     }
 
+<<<<<<< HEAD
     private List<CommentResponseDto> getDtoList(List<Comment> all){
         return all.stream().map(comment -> entityToDto(comment))
                 .collect(Collectors.toList());
     }
+=======
+    private List<CommentResponseDto> getDtoList(List<Comment> all) {
+        return all.stream().map(comment -> entityToDto(comment))
+                .collect(Collectors.toList());
+    }
+
+>>>>>>> origin/feature/15
 }
