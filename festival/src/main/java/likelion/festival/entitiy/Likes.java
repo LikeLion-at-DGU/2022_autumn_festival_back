@@ -19,7 +19,7 @@ public class Likes {
     private Long id;
 
     @NotNull
-    private String cookie_key;
+    private String cookieKey;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
