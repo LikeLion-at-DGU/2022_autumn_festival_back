@@ -2,7 +2,6 @@ package likelion.festival.controller;
 
 import likelion.festival.dto.*;
 import likelion.festival.entitiy.Booth;
-import likelion.festival.entitiy.BoothLocation;
 import likelion.festival.entitiy.Likes;
 import likelion.festival.service.BoothService;
 import likelion.festival.service.CommentService;
@@ -25,8 +24,8 @@ public class BoothController {
     private final CommentService commentService;
 
     @GetMapping(params = {"filter"})
-    public List<BoothFilterDto> boothFilter(@RequestParam BoothLocation filter) {
-        return boothService.boothFilter(filter);
+    public List<BoothFilterDto> boothFilter(@RequestParam String filter) {
+        return boothService.boothFilterAndSearch(filter);
     }
 
     @GetMapping("/top3")
@@ -34,13 +33,13 @@ public class BoothController {
         return boothService.boothTopThree();
     }
 
-    @GetMapping(params = {"search"})
-    public List<BoothFilterDto> boothSearch(@RequestParam String search) {
-        return boothService.search(search);
+    @GetMapping
+    public List<BoothDayLocationDto> boothDayLcotion(@RequestParam String day, @RequestParam String location){
+        return boothService.boothDayLocation(day, location);
     }
 
     @PostMapping()
-    public Integer boothCreate(@RequestBody BoothDto boothDto) {
+    public Long boothCreate(@RequestBody BoothDto boothDto) {
         return boothService.create(boothDto);
     }
 
