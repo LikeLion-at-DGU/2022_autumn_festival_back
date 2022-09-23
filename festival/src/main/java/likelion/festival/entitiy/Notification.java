@@ -22,7 +22,7 @@ public class Notification extends BaseEntity{
 
     private Long imageId;
 
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private NotificationType notificationType;
 
 
