@@ -40,7 +40,6 @@ public class Booth {
     @NotNull
     private String location;
 
-    @NotNull
     private Integer boothNo;
 
     @NotNull
