@@ -38,12 +38,13 @@ public class BoothDto {
     private Long imageId;
 
     @Builder
-    public BoothDto(Long id, String title, String introduction, BoothType boothType, BoothLocation boothLocation, String notice, String content, String startAt, String endAt, Long imageId) {
+    public BoothDto(Long id, String title, String introduction, BoothType boothType, String location, Integer boothNo, String notice, String content, String startAt, String endAt, Long imageId) {
         this.id = id;
         this.title = title;
         this.introduction = introduction;
         this.boothType = boothType;
-        this.boothLocation = boothLocation;
+        this.location = location;
+        this.boothNo = boothNo;
         this.notice = notice;
         this.content = content;
         this.startAt = startAt;
