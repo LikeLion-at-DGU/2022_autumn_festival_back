@@ -57,9 +57,9 @@ public class NotificationController {
             images.transferTo(new File(imagePath));
 
             ImageDto imageDto = new ImageDto();
-            imageDto.setOrigin_file_name(origFilename);
-            imageDto.setServer_file_name(servFilename);
-            imageDto.setStored_file_path(imagePath);
+            imageDto.setOriginFileName(origFilename);
+            imageDto.setServerFileName(servFilename);
+            imageDto.setStoredFilePath(imagePath);
 
             Long imageId = imageService.saveImage(imageDto);
             notificationDto.setImageId(imageId);
