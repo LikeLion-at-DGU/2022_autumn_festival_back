@@ -150,6 +150,7 @@ public class BoothService {
                 .boothNo(boothDto.getBoothNo())
                 .notice(boothDto.getNotice())
                 .content(boothDto.getContent())
+                .imageId(boothDto.getImageId())
                 .startAt(boothDto.getStartAt())
                 .endAt(boothDto.getEndAt())
                 //TODO : 위치 이미지와 소개 이미지 추가
@@ -166,6 +167,7 @@ public class BoothService {
                 .boothNo(booth.getBoothNo())
                 .notice(booth.getNotice())
                 .content(booth.getContent())
+                .imageId(booth.getImageId())
                 .startAt(booth.getStartAt())
                 .endAt(booth.getEndAt())
                 //TODO : 위치 이미지와 소개 이미지 추가

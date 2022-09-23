@@ -1,24 +1,31 @@
 package likelion.festival.entitiy;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
+@NoArgsConstructor
 public class Image {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
-    private String origin_file_name;
+    private String originFileName;
 
-    private String stored_file_path;
+    private String serverFileName;
 
-    private long file_size;
+    private String storedFilePath;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "booth_id")
-    private Booth booth;
+    @Builder
+    public Image(Long id, String originFileName, String serverFileName, String storedFilePath) {
+        this.id = id;
+        this.originFileName = originFileName;
+        this.serverFileName = serverFileName;
+        this.storedFilePath = storedFilePath;
+    }
 }
