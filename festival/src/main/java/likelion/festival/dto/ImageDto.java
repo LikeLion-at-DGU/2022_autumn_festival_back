@@ -11,27 +11,28 @@ public class ImageDto {
 
     private Long id;
 
-    private String origin_file_name;
+    private String originFileName;
 
-    private String server_file_name;
+    private String serverFileName;
 
-    private String stored_file_path;
+    private String storedFilePath;
 
 
     public Image toEntity(){
         Image build = Image.builder()
                 .id(id)
-                .origin_file_name(origin_file_name)
-                .stored_file_path(stored_file_path)
+                .originFileName(originFileName)
+                .serverFileName(serverFileName)
+                .storedFilePath(storedFilePath)
                 .build();
         return build;
     }
 
     @Builder
-    public ImageDto(Long id, String origin_file_name, String server_file_name, String stored_file_path) {
+    public ImageDto(Long id, String originFileName, String serverFileName, String storedFilePath) {
         this.id = id;
-        this.origin_file_name = origin_file_name;
-        this.server_file_name = server_file_name;
-        this.stored_file_path = stored_file_path;
+        this.originFileName = originFileName;
+        this.serverFileName = serverFileName;
+        this.storedFilePath = storedFilePath;
     }
 }
