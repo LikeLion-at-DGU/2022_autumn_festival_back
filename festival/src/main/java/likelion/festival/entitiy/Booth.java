@@ -35,11 +35,13 @@ public class Booth {
     private BoothType boothType;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    private BoothLocation boothLocation;
+    private String introduction;
 
     @NotNull
-    private String introduction;
+    private String location;
+
+    @NotNull
+    private Integer boothNo;
 
     @NotNull
     private String startAt;
