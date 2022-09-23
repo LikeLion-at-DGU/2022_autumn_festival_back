@@ -15,17 +15,17 @@ public class Image {
     @Id
     private Long id;
 
-    private String origin_file_name;
+    private String originFileName;
 
-    private String server_file_name;
+    private String serverFileName;
 
-    private String stored_file_path;
+    private String storedFilePath;
 
     @Builder
-    public Image(Long id, String origin_file_name, String server_file_name, String stored_file_path) {
+    public Image(Long id, String originFileName, String serverFileName, String storedFilePath) {
         this.id = id;
-        this.origin_file_name = origin_file_name;
-        this.server_file_name = server_file_name;
-        this.stored_file_path = stored_file_path;
+        this.originFileName = originFileName;
+        this.serverFileName = serverFileName;
+        this.storedFilePath = storedFilePath;
     }
 }
