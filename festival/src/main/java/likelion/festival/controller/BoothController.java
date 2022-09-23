@@ -46,7 +46,7 @@ public class BoothController {
 
     @PostMapping()
     public Integer boothCreate(@RequestPart(value = "images",required = false) MultipartFile images, @RequestParam(value = "boothDto") BoothDto boothDto) {
-        if (images==null){
+        if (images == null) {
             boothService.create(boothDto);
             return HttpStatus.OK.value();
         }
@@ -54,32 +54,32 @@ public class BoothController {
             String origFilename = images.getOriginalFilename();
             String servFilename = new MD5Generator(origFilename).toString();
 
-            String savePath =System.getProperty("user.dir")+"/files";
+            String savePath = System.getProperty("user.dir") + "/files";
 
 
-            if (!new File(savePath).exists()){
+            if (!new File(savePath).exists()) {
                 try {
                     new File(savePath).mkdir();
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     e.getStackTrace();
                 }
             }
-            String imagePath = savePath + "/" + servFilename+".jpg";
+            String imagePath = savePath + "/" + servFilename + ".jpg";
             images.transferTo(new File(imagePath));
 
             ImageDto imageDto = new ImageDto();
-            imageDto.setOrigin_file_name(origFilename);
-            imageDto.setServer_file_name(servFilename);
-            imageDto.setStored_file_path(imagePath);
+            imageDto.setOriginFileName(origFilename);
+            imageDto.setServerFileName(servFilename);
+            imageDto.setStoredFilePath(imagePath);
 
             Long imageId = imageService.saveImage(imageDto);
             boothDto.setImageId(imageId);
             boothService.create(boothDto);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return HttpStatus.OK.value();
+    }
 
     @GetMapping("{id}")
     public BoothDto boothRead(@PathVariable Long id) {
