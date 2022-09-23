@@ -111,7 +111,7 @@ public class BoothService {
                 .boothLocation(boothDto.getBoothLocation())
                 .notice(boothDto.getNotice())
                 .content(boothDto.getContent())
-정                .imageId(boothDto.getImageId())
+                .imageId(boothDto.getImageId())
                 .startAt(boothDto.getStartAt())
                 .endAt(boothDto.getEndAt())
                 //TODO : 위치 이미지와 소개 이미지 추가
