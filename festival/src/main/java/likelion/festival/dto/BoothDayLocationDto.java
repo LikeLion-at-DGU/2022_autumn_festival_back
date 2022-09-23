@@ -8,16 +8,21 @@ import lombok.Data;
 @Builder
 @Data
 public class BoothDayLocationDto {
+
     private Long id;
+
     @NotNull
     private BoothType boothType;
+
     @NotNull
     private String title;
+
     @NotNull
     private String introduction;
+
     @NotNull
     private String location;
-    @NotNull
+
     private Integer boothNo;
 
     /*

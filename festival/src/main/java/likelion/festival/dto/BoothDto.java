@@ -21,7 +21,6 @@ public class BoothDto {
     @NotNull
     private String location;
 
-    @NotNull
     private Integer boothNo;
 
     private String notice;
