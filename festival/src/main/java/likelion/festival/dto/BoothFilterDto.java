@@ -1,23 +1,27 @@
 package likelion.festival.dto;
 
-import likelion.festival.entitiy.BoothLocation;
+import com.sun.istack.NotNull;
 import likelion.festival.entitiy.BoothType;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NonNull;
 
 @Builder
 @Data
 public class BoothFilterDto {
     private Long id;
-    @NonNull
+    @NotNull
     private BoothType boothType;
-    @NonNull
+    @NotNull
     private String title;
-    @NonNull
+    @NotNull
     private String introduction;
-    @NonNull
-    private BoothLocation boothLocation;
+    @NotNull
+    private String location;
+    @NotNull
+    private Integer boothNo;
+
+
+    private boolean active;
     /*
     TODO : 이미지 필드 및 좋아요 개수 필드 추가
      */
