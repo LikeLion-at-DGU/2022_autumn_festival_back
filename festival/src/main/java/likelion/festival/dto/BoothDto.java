@@ -1,7 +1,6 @@
 package likelion.festival.dto;
 
 import com.sun.istack.NotNull;
-import likelion.festival.entitiy.BoothLocation;
 import likelion.festival.entitiy.BoothType;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +19,10 @@ public class BoothDto {
     private BoothType boothType;
 
     @NotNull
-    private BoothLocation boothLocation;
+    private String location;
+
+    @NotNull
+    private Integer boothNo;
 
     private String notice;
 
