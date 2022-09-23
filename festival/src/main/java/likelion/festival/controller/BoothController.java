@@ -130,17 +130,6 @@ public class BoothController {
         return commentService.create(id, commentRequestDto);
     }
 
-    @DeleteMapping("{id}/comments/{comment_id}")
-    public String deleteComment(@PathVariable Long id, @PathVariable Long comment_id, @RequestBody
-            CommentPasswordDto password){
-        return commentService.delete(comment_id, password);
-    }
-
-    @DeleteMapping("{id}/comments/{comment_id}/force")
-    public String deleteForceComment(@PathVariable Long id, @PathVariable Long comment_id){
-        return commentService.force_delete(comment_id);
-    }
-
     @GetMapping("{id}/comments")
     public List<CommentResponseDto> getCommentList(@PathVariable Long id){
         return commentService.getAll(id);
