@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @RequestMapping("api/booths")
@@ -32,18 +33,19 @@ public class BoothController {
     private final ImageService imageService;
 
     @GetMapping(params = {"filter"})
-    public List<BoothFilterDto> boothFilter(@RequestParam String filter) {
-        return boothService.boothFilterAndSearch(filter);
+    public List<BoothFilterDto> boothFilter(HttpServletRequest request, @RequestParam String filter) {
+        return boothService.boothFilterAndSearch(request, filter);
     }
 
     @GetMapping("/top3")
-    public List<BoothFilterDto> boothTopThree() {
-        return boothService.boothTopThree();
+    public List<BoothFilterDto> boothTopThree(HttpServletRequest request) {
+        return boothService.boothTopThree(request);
     }
 
     @GetMapping
-    public List<BoothDayLocationDto> boothDayLcotion(@RequestParam String day, @RequestParam String location){
-        return boothService.boothDayLocation(day, location);
+    public List<BoothDayLocationDto> boothDayLcotion(HttpServletRequest request, @RequestParam String day,
+                                                     @RequestParam String location){
+        return boothService.boothDayLocation(request, day, location);
     }
 
     @PostMapping()
@@ -84,8 +86,8 @@ public class BoothController {
     }
 
     @GetMapping("{id}")
-    public BoothDto boothRead(@PathVariable Long id) {
-        return boothService.read(id);
+    public BoothDto boothRead(HttpServletRequest request, @PathVariable Long id) {
+        return boothService.read(request, id);
     }
 
     @PutMapping("{id}")
