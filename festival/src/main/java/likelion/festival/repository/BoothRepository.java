@@ -15,7 +15,11 @@ public interface BoothRepository extends JpaRepository<Booth, Long> {
     @Query("SELECT e FROM Booth e ORDER BY e.title")
     List<Booth> findByTop3();
 
-    List<Booth> findByTitle(String title);
+    List<Booth> findByTitleContaining(String title);
 
     // TODO : 메뉴검색 문 추가
+    List<Booth> findByMenus_NameContaining(String menu);
+
+    List<Booth> findByTitle(String title);
+
 }

@@ -36,9 +36,9 @@ public class BoothController {
         return boothService.boothFilterAndSearch(request, filter);
     }
 
-    @GetMapping("/top3")
-    public List<BoothFilterDto> boothTopThree(HttpServletRequest request) {
-        return boothService.boothTopThree(request);
+    @GetMapping("/top5")
+    public List<BoothFilterDto> boothTopFive(HttpServletRequest request) {
+        return boothService.boothTopFive(request);
     }
 
     @GetMapping
@@ -50,9 +50,7 @@ public class BoothController {
     @PostMapping()
     public Integer boothCreate(@RequestPart(value = "imgList",required = false) List<MultipartFile> imgList, @RequestParam(value = "boothDto") BoothDto boothDto) {
         Booth booth = boothService.create(boothDto);
-        System.out.println("asc");
         if (imgList==null){
-            System.out.println("gd");
             return HttpStatus.OK.value();
         }
         imageService.saveBoothImage(imgList, booth);

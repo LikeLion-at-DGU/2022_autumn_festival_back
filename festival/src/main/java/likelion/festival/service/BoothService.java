@@ -15,10 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -29,12 +26,13 @@ public class BoothService {
     private final BoothRepository boothRepository;
     private final LikesService likesService;
 
-
-    // TODO : 메뉴검색 추가하기
     public List<BoothFilterDto> boothFilterAndSearch(HttpServletRequest request, String search) {
-        List<Booth> booths = boothRepository.findByTitle(search);
+        List<Booth> booths = boothRepository.findByTitleContaining(search);
         if (booths.isEmpty()) {
             booths = boothRepository.findByLocation(search);
+        }
+        if(booths.isEmpty()){
+            booths = boothRepository.findByMenus_NameContaining(search);
         }
         List<BoothFilterDto> boothFilterDtos = booths.stream().map(e -> {
                     LocalDate start = StringToDate(e.getStartAt());
@@ -54,10 +52,15 @@ public class BoothService {
         return boothFilterDtos;
     }
 
-    // TODO : 좋아요 기준으로 top3 추출하는 방식으로 refactoring (현재는 타이틀 기준으로 3개 추출한 코드)
-    public List<BoothFilterDto> boothTopThree(HttpServletRequest request) {
-        List<Booth> booths = boothRepository.findByTop3();
-        List<BoothFilterDto> boothFilterDtos = booths.stream().limit(3).map(e -> entityToFilterDto(e))
+    public List<BoothFilterDto> boothTopFive(HttpServletRequest request) {
+        List<Booth> booths = boothRepository.findAll();
+        List<BoothFilterDto> boothFilterDtos = booths.stream()
+                .map(e -> {BoothFilterDto boothFilterDto = entityToFilterDto(e);
+                    boothFilterDto.setLikeCnt(e.getLikes().stream().count());
+                    boothFilterDto.setIsLike(checkIsLike(request,e.getId()));
+                    return boothFilterDto;})
+                .sorted(Comparator.comparing(BoothFilterDto::getLikeCnt).reversed())
+                .limit(5)
                 .collect(Collectors.toList());
         return boothFilterDtos;
     }

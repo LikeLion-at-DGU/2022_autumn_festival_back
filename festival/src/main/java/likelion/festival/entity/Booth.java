@@ -49,6 +49,7 @@ public class Booth {
     @NotNull
     private String endAt;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "booth")
     private List<Menu> menus = new ArrayList<>();
 
