@@ -45,6 +45,7 @@ public class MenuService {
         return getDtoList(menus);
     }
 
+    @Transactional
     public MenuResponseDto update(Long id, MenuRequestDto menuRequestDto){
         Optional<Menu> menu = menuRepository.findById(id);
         if (menu.isEmpty()){
@@ -56,6 +57,7 @@ public class MenuService {
         return entityToDto(updateMenu);
     }
 
+    @Transactional
     public void delete(Long id){
         Optional<Menu> menu = menuRepository.findById(id);
         if (menu.isEmpty()){
