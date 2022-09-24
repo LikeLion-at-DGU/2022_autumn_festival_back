@@ -1,13 +1,24 @@
 package likelion.festival.service;
 
+import likelion.festival.dto.BoothDto;
 import likelion.festival.dto.ImageDto;
+import likelion.festival.dto.NotificationDto;
+import likelion.festival.entitiy.Booth;
 import likelion.festival.entitiy.Image;
+import likelion.festival.entitiy.Notification;
+import likelion.festival.repository.BoothRepository;
 import likelion.festival.repository.ImageRepository;
+import likelion.festival.repository.NotificationRepository;
+import likelion.festival.util.MD5Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Transactional(readOnly = true)
@@ -16,10 +27,67 @@ import java.util.Optional;
 public class ImageService {
 
     private final ImageRepository imageRepository;
+    private final NotificationRepository notificationRepository;
+    private final BoothRepository boothRepository;
+
+    private final BoothService boothService;
 
     @Transactional
-    public Long saveImage(ImageDto imageDto) {
-        return imageRepository.save(imageDto.toEntity()).getId();
+    public void saveNotificationImage(List<MultipartFile> itemImgList, Notification notification) {
+        try {
+            for (MultipartFile image : itemImgList) {
+                String origFilename = image.getOriginalFilename();
+                String servFilename = new MD5Generator(origFilename).toString();
+                String savePath = System.getProperty("user.dir") + "/files";
+
+                if (!new File(savePath).exists()) {
+                    try {
+                        new File(savePath).mkdir();
+                    } catch (Exception e) {
+                        e.getStackTrace();
+                    }
+                }
+                String imagePath = savePath + "/" + servFilename + ".jpg";
+                image.transferTo(new File(imagePath));
+                ImageDto imageDto = new ImageDto();
+                imageDto.setOriginFileName(origFilename);
+                imageDto.setServerFileName(servFilename);
+                imageDto.setStoredFilePath(imagePath);
+                imageDto.setNotification(notification);
+                imageRepository.save(imageDto.toEntity());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Transactional
+    public void saveBoothImage(List<MultipartFile> itemImgList, Booth booth) {
+        try {
+            for (MultipartFile image : itemImgList) {
+                String origFilename = image.getOriginalFilename();
+                String servFilename = new MD5Generator(origFilename).toString();
+                String savePath = System.getProperty("user.dir") + "/files";
+
+                if (!new File(savePath).exists()) {
+                    try {
+                        new File(savePath).mkdir();
+                    } catch (Exception e) {
+                        e.getStackTrace();
+                    }
+                }
+                String imagePath = savePath + "/" + servFilename + ".jpg";
+                image.transferTo(new File(imagePath));
+                ImageDto imageDto = new ImageDto();
+                imageDto.setOriginFileName(origFilename);
+                imageDto.setServerFileName(servFilename);
+                imageDto.setStoredFilePath(imagePath);
+                imageDto.setBooth(booth);
+                imageRepository.save(imageDto.toEntity());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
