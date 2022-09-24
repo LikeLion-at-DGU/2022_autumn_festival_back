@@ -4,6 +4,7 @@ import likelion.festival.dto.BoothDayLocationDto;
 import likelion.festival.dto.BoothDto;
 import likelion.festival.dto.BoothFilterDto;
 import likelion.festival.entity.Booth;
+import likelion.festival.entity.Image;
 import likelion.festival.exception.WrongBoothId;
 import likelion.festival.repository.BoothRepository;
 import lombok.RequiredArgsConstructor;
@@ -86,10 +87,10 @@ public class BoothService {
 
     //생성 ok
     @Transactional
-    public Long create(BoothDto boothDto) {
+    public Booth create(BoothDto boothDto) {
         Booth booth = boothDtoToEntity(boothDto);
-        boothRepository.save(booth);
-        return booth.getId();
+        Booth newBooth = boothRepository.save(booth);
+        return newBooth;
     }
 
     //읽기 ok
@@ -113,6 +114,11 @@ public class BoothService {
         boothDto.setDays(days);
         boothDto.setIsLike(checkIsLike(request, id));
         boothDto.setLikeCnt(booth.get().getLikes().stream().count());
+        if (booth.get().getImages().isEmpty()){
+            boothDto.setImages(new ArrayList<>());
+            return boothDto;
+        }
+        boothDto.setImages(booth.get().getImages());
         return boothDto;
     }
 
@@ -177,7 +183,7 @@ public class BoothService {
                 .boothNo(boothDto.getBoothNo())
                 .notice(boothDto.getNotice())
                 .content(boothDto.getContent())
-                .imageId(boothDto.getImageId())
+                .images(boothDto.getImages())
                 .startAt(boothDto.getStartAt())
                 .endAt(boothDto.getEndAt())
                 //TODO : 위치 이미지와 소개 이미지 추가
@@ -194,7 +200,6 @@ public class BoothService {
                 .boothNo(booth.getBoothNo())
                 .notice(booth.getNotice())
                 .content(booth.getContent())
-                .imageId(booth.getImageId())
                 .startAt(booth.getStartAt())
                 .endAt(booth.getEndAt())
                 //TODO : 위치 이미지와 소개 이미지 추가

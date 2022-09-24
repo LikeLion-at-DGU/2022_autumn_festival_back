@@ -36,7 +36,7 @@ public class NotificationService {
                 .writer(notification.getWriter())
                 .content(notification.getContent())
                 .notificationType(notification.getNotificationType())
-                .imageId(notification.getImageId())
+                .images(notification.getImages())
                 .createdDateTime(notification.getCreatedDateTime())
                 .modifiedDateTime(notification.getModifiedDateTime())
                 .build();
@@ -52,12 +52,11 @@ public class NotificationService {
     }
 
     @Transactional
-    public Integer createNotification(NotificationDto notificationDto){
+    public Notification createNotification(NotificationDto notificationDto){
         Notification notification = new Notification();
         BeanUtils.copyProperties(notificationDto,notification);
-        notificationRepository.save(notification);
-        return HttpStatus.CREATED.value();
-
+        Notification newNotification = notificationRepository.save(notification);
+        return newNotification;
     }
 
     @Transactional

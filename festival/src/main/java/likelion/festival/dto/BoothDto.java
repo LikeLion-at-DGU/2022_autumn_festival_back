@@ -2,6 +2,7 @@ package likelion.festival.dto;
 
 import com.sun.istack.NotNull;
 import likelion.festival.entity.BoothType;
+import likelion.festival.entity.Image;
 import lombok.Builder;
 import lombok.Data;
 
@@ -39,14 +40,14 @@ public class BoothDto {
 
     private List<Integer> days = new ArrayList<>();
 
-    private Long imageId;
-
     private long likeCnt;
 
     private Boolean isLike;
 
+    private List<Image> images;
+
     @Builder
-    public BoothDto(Long id, String title, String introduction, BoothType boothType, String location, Integer boothNo, String notice, String content, String startAt, List<Integer> days,String endAt, Long imageId) {
+    public BoothDto(Long id, String title, String introduction, BoothType boothType, String location, Integer boothNo, String notice, String content, String startAt, List<Integer> days,String endAt, List<Image> images) {
         this.id = id;
         this.title = title;
         this.introduction = introduction;
@@ -58,7 +59,7 @@ public class BoothDto {
         this.startAt = startAt;
         this.endAt = endAt;
         this.days = days;
-        this.imageId = imageId;
+        this.images =images;
     }
 
     //TODO : 위치 이미지, 이미지 필드 추가
