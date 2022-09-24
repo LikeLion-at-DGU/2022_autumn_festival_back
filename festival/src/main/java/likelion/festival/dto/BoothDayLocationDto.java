@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Builder
 @Data
-public class BoothFilterDto {
+public class BoothDayLocationDto {
 
     private Long id;
 
@@ -25,8 +25,6 @@ public class BoothFilterDto {
 
     private Integer boothNo;
 
-
-    private boolean active;
     /*
     TODO : 이미지 필드 및 좋아요 개수 필드 추가
      */

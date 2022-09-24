@@ -1,17 +1,18 @@
 package likelion.festival.service;
 
+import likelion.festival.dto.BoothDayLocationDto;
 import likelion.festival.dto.BoothDto;
 import likelion.festival.dto.BoothFilterDto;
 import likelion.festival.entitiy.Booth;
-import likelion.festival.entitiy.BoothLocation;
 import likelion.festival.exception.WrongBoothId;
 import likelion.festival.repository.BoothRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,10 +24,26 @@ public class BoothService {
 
     private final BoothRepository boothRepository;
 
-    public List<BoothFilterDto> boothFilter(BoothLocation boothLocation) {
-        // TODO : default 위치 설정
-        List<Booth> booths = boothRepository.findByBoothLocation(boothLocation);
-        List<BoothFilterDto> boothFilterDtos = booths.stream().map(e -> entityToFilterDto(e))
+
+    // TODO : 메뉴검색 추가하기
+    public List<BoothFilterDto> boothFilterAndSearch(String search) {
+        List<Booth> booths = boothRepository.findByTitle(search);
+        if (booths.isEmpty()) {
+            booths = boothRepository.findByLocation(search);
+        }
+        List<BoothFilterDto> boothFilterDtos = booths.stream().map(e -> {
+                    LocalDate start = StringToDate(e.getStartAt());
+                    LocalDate end = StringToDate(e.getEndAt());
+                    LocalDate today = LocalDate.now();
+                    BoothFilterDto boothFilterDto = entityToFilterDto(e);
+                    if (start.isBefore(today) && end.isAfter(today) || start.isEqual(today) || end.isEqual(today)) {
+                        boothFilterDto.setActive(true);
+                    } else {
+                        boothFilterDto.setActive(false);
+                    }
+
+                    return boothFilterDto;
+                })
                 .collect(Collectors.toList());
         return boothFilterDtos;
     }
@@ -39,23 +56,30 @@ public class BoothService {
         return boothFilterDtos;
     }
 
-    // TODO : 메뉴검색 추가하기
-    public List<BoothFilterDto> search(String search) {
-        List<Booth> booths = boothRepository.findByTitle(search);
-        List<BoothFilterDto> boothFilterDtos = booths.stream().map(e -> entityToFilterDto(e))
+    //날짜와 장소로 필터링 하는 기능 ok
+    public List<BoothDayLocationDto> boothDayLocation(String day, String location) {
+        HashMap<String, String> date = festivalDate();
+        LocalDate today = StringToDate(date.get(day));
+        List<Booth> booths = boothRepository.findByLocation(location);
+        List<BoothDayLocationDto> result = booths.stream()
+                .filter(e -> StringToDate(e.getStartAt()).isBefore(today)
+                        && StringToDate(e.getEndAt()).isAfter(today)
+                        || StringToDate(e.getStartAt()).isEqual(today)
+                        || StringToDate(e.getEndAt()).isEqual(today))
+                .map(e -> entityToDayLocationDto(e))
                 .collect(Collectors.toList());
-        return boothFilterDtos;
+        return result;
     }
 
-    //생성
+    //생성 ok
     @Transactional
-    public Integer create(BoothDto boothDto) {
+    public Long create(BoothDto boothDto) {
         Booth booth = boothDtoToEntity(boothDto);
         boothRepository.save(booth);
-        return HttpStatus.CREATED.value();
+        return booth.getId();
     }
 
-    //읽기
+    //읽기 ok
     public BoothDto read(Long id) {
         Optional<Booth> booth = boothRepository.findById(id);
         if (!booth.isPresent()) {
@@ -65,7 +89,7 @@ public class BoothService {
         return boothDto;
     }
 
-    //수정
+    //수정 ok
     @Transactional
     public Booth update(Long id, BoothDto boothDto) {
         Optional<Booth> booth = boothRepository.findById(id);
@@ -92,45 +116,74 @@ public class BoothService {
 
     //TODO : like, menu, comment 관련 비즈니스 로직 작성하기
 
-    BoothFilterDto entityToFilterDto(Booth booth) {
+    public HashMap<String, String> festivalDate() {
+        HashMap<String, String> date = new HashMap<>();
+        date.put("WED", "2022-09-28");
+        date.put("THU", "2022-09-29");
+        date.put("FRI", "2022-09-30");
+        return date;
+    }
+
+    public LocalDate StringToDate(String date) {
+        return LocalDate.parse(date);
+    }
+
+    public BoothFilterDto entityToFilterDto(Booth booth) {
         return BoothFilterDto.builder()
                 .id(booth.getId())
                 .boothType(booth.getBoothType())
                 .title(booth.getTitle())
+                .location(booth.getLocation())
+                .boothNo(booth.getBoothNo())
                 .introduction(booth.getIntroduction())
-                .boothLocation(booth.getBoothLocation())
                 // TODO : like 갯수와 이미지 추가하기
                 .build();
     }
 
-    Booth boothDtoToEntity(BoothDto boothDto) {
+    public Booth boothDtoToEntity(BoothDto boothDto) {
         return Booth.builder()
+                .id(boothDto.getId())
                 .title(boothDto.getTitle())
                 .introduction(boothDto.getIntroduction())
                 .boothType(boothDto.getBoothType())
-                .boothLocation(boothDto.getBoothLocation())
+                .location(boothDto.getLocation())
+                .boothNo(boothDto.getBoothNo())
                 .notice(boothDto.getNotice())
                 .content(boothDto.getContent())
+                .imageId(boothDto.getImageId())
                 .startAt(boothDto.getStartAt())
                 .endAt(boothDto.getEndAt())
                 //TODO : 위치 이미지와 소개 이미지 추가
                 .build();
     }
 
-    BoothDto entityToBoothDto(Booth booth) {
+    public BoothDto entityToBoothDto(Booth booth) {
         return BoothDto.builder()
                 .id(booth.getId())
                 .title(booth.getTitle())
                 .introduction(booth.getIntroduction())
                 .boothType(booth.getBoothType())
-                .boothLocation(booth.getBoothLocation())
+                .location(booth.getLocation())
+                .boothNo(booth.getBoothNo())
                 .notice(booth.getNotice())
                 .content(booth.getContent())
+                .imageId(booth.getImageId())
                 .startAt(booth.getStartAt())
                 .endAt(booth.getEndAt())
                 //TODO : 위치 이미지와 소개 이미지 추가
                 .build();
     }
 
+    public BoothDayLocationDto entityToDayLocationDto(Booth booth){
+        return BoothDayLocationDto.builder()
+                .id(booth.getId())
+                .boothType(booth.getBoothType())
+                .title(booth.getTitle())
+                .location(booth.getLocation())
+                .boothNo(booth.getBoothNo())
+                .introduction(booth.getIntroduction())
+                // TODO : like 갯수와 이미지 추가하기
+                .build();
+    }
 
 }

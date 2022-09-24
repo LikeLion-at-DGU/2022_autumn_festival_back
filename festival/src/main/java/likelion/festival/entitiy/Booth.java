@@ -35,14 +35,17 @@ public class Booth {
     private BoothType boothType;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
-    private BoothLocation boothLocation;
-
-    @NotNull
     private String introduction;
 
     @NotNull
+    private String location;
+
+    private Integer boothNo;
+
+    @NotNull
     private String startAt;
+
+    private Long imageId;
 
     @NotNull
     private String endAt;
@@ -53,8 +56,6 @@ public class Booth {
     @OneToMany(mappedBy = "booth")
     private List<Likes> likes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "booth")
-    private List<Image> images = new ArrayList<>();
 
     @JsonManagedReference
     @OneToMany(mappedBy = "booth")
