@@ -1,5 +1,7 @@
 package likelion.festival.entitiy;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
@@ -45,8 +47,6 @@ public class Booth {
     @NotNull
     private String startAt;
 
-    private Long imageId;
-
     @NotNull
     private String endAt;
 
@@ -60,4 +60,9 @@ public class Booth {
     @JsonManagedReference
     @OneToMany(mappedBy = "booth")
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "booth",cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Image> images = new ArrayList<>();
+
 }
