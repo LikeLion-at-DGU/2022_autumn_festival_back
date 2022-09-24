@@ -37,9 +37,9 @@ public class BoothController {
         return boothService.boothFilterAndSearch(request, filter);
     }
 
-    @GetMapping("/top3")
-    public List<BoothFilterDto> boothTopThree(HttpServletRequest request) {
-        return boothService.boothTopThree(request);
+    @GetMapping("/top5")
+    public List<BoothFilterDto> boothTopFive(HttpServletRequest request) {
+        return boothService.boothTopFive(request);
     }
 
     @GetMapping
@@ -59,7 +59,6 @@ public class BoothController {
             String servFilename = new MD5Generator(origFilename).toString();
 
             String savePath = System.getProperty("user.dir") + "/files";
-
 
             if (!new File(savePath).exists()) {
                 try {
