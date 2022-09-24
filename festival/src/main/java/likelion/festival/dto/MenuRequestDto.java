@@ -1,6 +1,6 @@
 package likelion.festival.dto;
 
-import likelion.festival.entitiy.Booth;
+import likelion.festival.entity.Booth;
 import lombok.*;
 
 @Data

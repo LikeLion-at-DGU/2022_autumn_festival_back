@@ -1,8 +1,8 @@
 package likelion.festival.controller;
 
 import likelion.festival.dto.*;
-import likelion.festival.entitiy.Booth;
-import likelion.festival.entitiy.Likes;
+import likelion.festival.entity.Booth;
+import likelion.festival.entity.Likes;
 import likelion.festival.service.BoothService;
 import likelion.festival.service.CommentService;
 import likelion.festival.service.ImageService;

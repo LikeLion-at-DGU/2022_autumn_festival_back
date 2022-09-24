@@ -1,7 +1,7 @@
 package likelion.festival.dto;
 
 import com.sun.istack.NotNull;
-import likelion.festival.entitiy.BoothType;
+import likelion.festival.entity.BoothType;
 import lombok.Builder;
 import lombok.Data;
 

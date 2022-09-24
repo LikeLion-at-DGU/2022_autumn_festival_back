@@ -1,4 +1,4 @@
-package likelion.festival.entitiy;
+package likelion.festival.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sun.istack.NotNull;

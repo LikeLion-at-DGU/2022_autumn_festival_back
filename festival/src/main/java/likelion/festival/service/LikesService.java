@@ -1,7 +1,7 @@
 package likelion.festival.service;
 
-import likelion.festival.entitiy.Booth;
-import likelion.festival.entitiy.Likes;
+import likelion.festival.entity.Booth;
+import likelion.festival.entity.Likes;
 import likelion.festival.exception.WrongBoothId;
 import likelion.festival.exception.WrongLikesKey;
 import likelion.festival.repository.BoothRepository;

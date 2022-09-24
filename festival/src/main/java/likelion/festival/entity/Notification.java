@@ -1,4 +1,4 @@
-package likelion.festival.entitiy;
+package likelion.festival.entity;
 
 import com.sun.istack.NotNull;
 import lombok.Data;

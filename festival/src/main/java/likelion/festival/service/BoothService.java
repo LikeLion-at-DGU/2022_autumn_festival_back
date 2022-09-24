@@ -3,7 +3,7 @@ package likelion.festival.service;
 import likelion.festival.dto.BoothDayLocationDto;
 import likelion.festival.dto.BoothDto;
 import likelion.festival.dto.BoothFilterDto;
-import likelion.festival.entitiy.Booth;
+import likelion.festival.entity.Booth;
 import likelion.festival.exception.WrongBoothId;
 import likelion.festival.repository.BoothRepository;
 import lombok.RequiredArgsConstructor;

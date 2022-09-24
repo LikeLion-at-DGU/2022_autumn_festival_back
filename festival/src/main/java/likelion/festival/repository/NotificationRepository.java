@@ -1,7 +1,7 @@
 package likelion.festival.repository;
 
-import likelion.festival.entitiy.Notification;
-import likelion.festival.entitiy.NotificationType;
+import likelion.festival.entity.Notification;
+import likelion.festival.entity.NotificationType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
