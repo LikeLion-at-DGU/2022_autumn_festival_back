@@ -25,7 +25,11 @@ public class BoothDayLocationDto {
 
     private Integer boothNo;
 
+    private Long likeCnt;
+
+    private Boolean isLike;
+
     /*
-    TODO : 이미지 필드 및 좋아요 개수 필드 추가
+    TODO : 이미지 필드 추가
      */
 }

@@ -36,6 +36,10 @@ public class BoothDto {
 
     private Long imageId;
 
+    private long likeCnt;
+
+    private Boolean isLike;
+
     @Builder
     public BoothDto(Long id, String title, String introduction, BoothType boothType, String location, Integer boothNo, String notice, String content, String startAt, String endAt, Long imageId) {
         this.id = id;
