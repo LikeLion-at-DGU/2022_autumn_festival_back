@@ -71,9 +71,9 @@ public class NotificationController {
     }
 
     @DeleteMapping("{id}")
-    public Integer deleteNotification(@PathVariable Long id){
+    public String deleteNotification(@PathVariable Long id){
         notificationService.deleteNotification(id);
-        return HttpStatus.OK.value();
+        return "Ok";
     }
 
     @PutMapping("{id}")

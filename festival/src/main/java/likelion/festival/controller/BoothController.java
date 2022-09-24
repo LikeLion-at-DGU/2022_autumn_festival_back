@@ -96,7 +96,7 @@ public class BoothController {
     }
 
     @DeleteMapping("{id}")
-    public Integer boothDelete(@PathVariable Long id) {
+    public String boothDelete(@PathVariable Long id) {
         return boothService.delete(id);
     }
 
@@ -110,7 +110,7 @@ public class BoothController {
     }
 
     @DeleteMapping("/{id}/likes")
-    public void likeDelete(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response){
+    public String likeDelete(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response){
         Optional<Cookie> boothCookie = likesService.findBoothCookie(request, id);
         if (boothCookie.isPresent()) {
             Cookie userCookie = boothCookie.get();
@@ -125,6 +125,7 @@ public class BoothController {
         else {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
+        return "Ok";
     }
 
     @PostMapping("{id}/comments")
