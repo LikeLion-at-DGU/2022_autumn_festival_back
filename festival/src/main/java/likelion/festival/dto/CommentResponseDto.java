@@ -1,6 +1,5 @@
 package likelion.festival.dto;
 
-import likelion.festival.entitiy.Booth;
 import lombok.*;
 
 import java.time.LocalDateTime;

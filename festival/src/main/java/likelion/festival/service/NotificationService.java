@@ -1,8 +1,8 @@
 package likelion.festival.service;
 
 import likelion.festival.dto.NotificationDto;
-import likelion.festival.entitiy.Notification;
-import likelion.festival.entitiy.NotificationType;
+import likelion.festival.entity.Notification;
+import likelion.festival.entity.NotificationType;
 import likelion.festival.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;

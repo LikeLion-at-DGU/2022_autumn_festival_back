@@ -1,4 +1,4 @@
-package likelion.festival.entitiy;
+package likelion.festival.entity;
 
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
@@ -13,16 +13,13 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Entity
-public class Menu {
+public class Likes {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
 
     @NotNull
-    private String name;
-
-    @NotNull
-    private Long price;
+    private String cookieKey;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)

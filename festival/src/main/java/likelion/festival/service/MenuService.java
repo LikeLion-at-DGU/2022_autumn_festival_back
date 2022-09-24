@@ -2,8 +2,8 @@ package likelion.festival.service;
 
 import likelion.festival.dto.MenuRequestDto;
 import likelion.festival.dto.MenuResponseDto;
-import likelion.festival.entitiy.Booth;
-import likelion.festival.entitiy.Menu;
+import likelion.festival.entity.Booth;
+import likelion.festival.entity.Menu;
 import likelion.festival.exception.WrongBoothId;
 import likelion.festival.repository.BoothRepository;
 import likelion.festival.repository.MenuRepository;

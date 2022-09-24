@@ -1,7 +1,7 @@
 package likelion.festival.service;
 
 import likelion.festival.dto.ImageDto;
-import likelion.festival.entitiy.Image;
+import likelion.festival.entity.Image;
 import likelion.festival.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,6 @@
 package likelion.festival.dto;
 
-import likelion.festival.entitiy.Image;
+import likelion.festival.entity.Image;
 import lombok.*;
 
 @Getter

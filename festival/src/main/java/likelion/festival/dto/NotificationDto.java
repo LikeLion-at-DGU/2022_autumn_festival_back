@@ -1,7 +1,7 @@
 package likelion.festival.dto;
 
 import com.sun.istack.NotNull;
-import likelion.festival.entitiy.NotificationType;
+import likelion.festival.entity.NotificationType;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;

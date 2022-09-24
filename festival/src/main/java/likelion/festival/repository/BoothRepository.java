@@ -1,7 +1,7 @@
 package likelion.festival.repository;
 
 
-import likelion.festival.entitiy.Booth;
+import likelion.festival.entity.Booth;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
