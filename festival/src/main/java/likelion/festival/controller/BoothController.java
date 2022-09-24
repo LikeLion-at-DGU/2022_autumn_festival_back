@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,39 +48,14 @@ public class BoothController {
     }
 
     @PostMapping()
-    public Integer boothCreate(@RequestPart(value = "images",required = false) MultipartFile images, @RequestParam(value = "boothDto") BoothDto boothDto) {
-        if (images == null) {
-            boothService.create(boothDto);
+    public Integer boothCreate(@RequestPart(value = "imgList",required = false) List<MultipartFile> imgList, @RequestParam(value = "boothDto") BoothDto boothDto) {
+        Booth booth = boothService.create(boothDto);
+        System.out.println("asc");
+        if (imgList==null){
+            System.out.println("gd");
             return HttpStatus.OK.value();
         }
-        try {
-            String origFilename = images.getOriginalFilename();
-            String servFilename = new MD5Generator(origFilename).toString();
-
-            String savePath = System.getProperty("user.dir") + "/files";
-
-
-            if (!new File(savePath).exists()) {
-                try {
-                    new File(savePath).mkdir();
-                } catch (Exception e) {
-                    e.getStackTrace();
-                }
-            }
-            String imagePath = savePath + "/" + servFilename + ".jpg";
-            images.transferTo(new File(imagePath));
-
-            ImageDto imageDto = new ImageDto();
-            imageDto.setOriginFileName(origFilename);
-            imageDto.setServerFileName(servFilename);
-            imageDto.setStoredFilePath(imagePath);
-
-            Long imageId = imageService.saveImage(imageDto);
-            boothDto.setImageId(imageId);
-            boothService.create(boothDto);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        imageService.saveBoothImage(imgList, booth);
         return HttpStatus.OK.value();
     }
 
