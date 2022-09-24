@@ -7,6 +7,7 @@ import likelion.festival.service.BoothService;
 import likelion.festival.service.CommentService;
 import likelion.festival.service.ImageService;
 import likelion.festival.service.LikesService;
+import likelion.festival.service.MenuService;
 import likelion.festival.util.MD5Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,7 @@ public class BoothController {
     private final BoothService boothService;
     private final LikesService likesService;
     private final CommentService commentService;
+    private final MenuService menuService;
     private final ImageService imageService;
 
     @GetMapping(params = {"filter"})
@@ -135,6 +137,13 @@ public class BoothController {
         return commentService.getAll(id);
     }
 
+    @GetMapping("{id}/menus")
+    public List<MenuResponseDto> getMenuList(@PathVariable Long id){
+        return menuService.getAll(id);
+    }
 
-    // TODO : menu controller 추가하기
+    @PostMapping("{id}/menus")
+    public MenuResponseDto createMenu(@PathVariable Long id,  @RequestBody MenuRequestDto menuRequestDto){
+        return menuService.create(id, menuRequestDto);
+    }
 }

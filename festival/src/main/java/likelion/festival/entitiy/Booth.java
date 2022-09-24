@@ -51,7 +51,7 @@ public class Booth {
     private String endAt;
 
     @OneToMany(mappedBy = "booth")
-    private List<Menu> menuList = new ArrayList<>();
+    private List<Menu> menus = new ArrayList<>();
 
     @OneToMany(mappedBy = "booth")
     private List<Likes> likes = new ArrayList<>();
