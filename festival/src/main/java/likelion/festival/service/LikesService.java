@@ -9,6 +9,8 @@ import likelion.festival.repository.LikesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 import java.util.Random;
 
@@ -60,5 +62,18 @@ public class LikesService {
                 .limit(targetStringLength)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
+    }
+
+    public Optional<Cookie> findBoothCookie(HttpServletRequest request, Long id){
+        Cookie[] userCookies = request.getCookies();
+        if (userCookies == null){
+            return Optional.empty();
+        }
+        for (Cookie userCookie : userCookies) {
+            if (userCookie.getName().equals(id.toString())){
+                return Optional.of(userCookie);
+            }
+        }
+        return Optional.empty();
     }
 }

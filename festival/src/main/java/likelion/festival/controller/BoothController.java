@@ -109,20 +109,18 @@ public class BoothController {
 
     @DeleteMapping("/{id}/likes")
     public void likeDelete(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response){
-        Cookie[] userCookies = request.getCookies();
-        Boolean complete = false;
-        for (Cookie userCookie : userCookies) {
-            if (userCookie.getName().equals(id.toString())) {
-                String cookieKey = userCookie.getValue();
-                likesService.delete(id, cookieKey);
-                Cookie keyCookie = new Cookie(id.toString(), null);
-                keyCookie.setMaxAge(0);
-                keyCookie.setPath("/");
-                response.addCookie(keyCookie);
-                complete = true;
+        Optional<Cookie> boothCookie = likesService.findBoothCookie(request, id);
+        if (boothCookie.isPresent()) {
+            Cookie userCookie = boothCookie.get();
+            String cookieKey = userCookie.getValue();
+            likesService.delete(id, cookieKey);
+
+            Cookie keyCookie = new Cookie(id.toString(), null);
+            keyCookie.setMaxAge(0);
+            keyCookie.setPath("/");
+            response.addCookie(keyCookie);
             }
-        }
-        if (!complete){
+        else {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
     }
