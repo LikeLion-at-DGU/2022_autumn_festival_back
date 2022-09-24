@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,10 +26,11 @@ import java.util.stream.Collectors;
 public class BoothService {
 
     private final BoothRepository boothRepository;
+    private final LikesService likesService;
 
 
     // TODO : 메뉴검색 추가하기
-    public List<BoothFilterDto> boothFilterAndSearch(String search) {
+    public List<BoothFilterDto> boothFilterAndSearch(HttpServletRequest request, String search) {
         List<Booth> booths = boothRepository.findByTitle(search);
         if (booths.isEmpty()) {
             booths = boothRepository.findByLocation(search);
@@ -42,7 +45,8 @@ public class BoothService {
                     } else {
                         boothFilterDto.setActive(false);
                     }
-
+                    boothFilterDto.setIsLike(checkIsLike(request,e.getId()));
+                    boothFilterDto.setLikeCnt(e.getLikes().stream().count());
                     return boothFilterDto;
                 })
                 .collect(Collectors.toList());
@@ -50,7 +54,7 @@ public class BoothService {
     }
 
     // TODO : 좋아요 기준으로 top3 추출하는 방식으로 refactoring (현재는 타이틀 기준으로 3개 추출한 코드)
-    public List<BoothFilterDto> boothTopThree() {
+    public List<BoothFilterDto> boothTopThree(HttpServletRequest request) {
         List<Booth> booths = boothRepository.findByTop3();
         List<BoothFilterDto> boothFilterDtos = booths.stream().limit(3).map(e -> entityToFilterDto(e))
                 .collect(Collectors.toList());
@@ -58,7 +62,7 @@ public class BoothService {
     }
 
     //날짜와 장소로 필터링 하는 기능 ok
-    public List<BoothDayLocationDto> boothDayLocation(String day, String location) {
+    public List<BoothDayLocationDto> boothDayLocation(HttpServletRequest request, String day, String location) {
         HashMap<String, String> date = festivalDate();
         LocalDate today = StringToDate(date.get(day));
         List<Booth> booths = boothRepository.findByLocation(location);
@@ -67,7 +71,12 @@ public class BoothService {
                         && StringToDate(e.getEndAt()).isAfter(today)
                         || StringToDate(e.getStartAt()).isEqual(today)
                         || StringToDate(e.getEndAt()).isEqual(today))
-                .map(e -> entityToDayLocationDto(e))
+                .map(e -> {
+                    BoothDayLocationDto boothDayLocationDto = entityToDayLocationDto(e);
+                    boothDayLocationDto.setIsLike(checkIsLike(request, e.getId()));
+                    boothDayLocationDto.setLikeCnt(e.getLikes().stream().count());
+                    return boothDayLocationDto;
+                })
                 .collect(Collectors.toList());
         return result;
     }
@@ -81,12 +90,13 @@ public class BoothService {
     }
 
     //읽기 ok
-    public BoothDto read(Long id) {
+    public BoothDto read(HttpServletRequest request, Long id) {
         Optional<Booth> booth = boothRepository.findById(id);
         if (!booth.isPresent()) {
             throw new WrongBoothId();
         }
         BoothDto boothDto = entityToBoothDto(booth.get());
+
         List<Integer> days = new ArrayList<>();
         String startDate = boothDto.getStartAt();
         String endDate = boothDto.getEndAt();
@@ -98,6 +108,8 @@ public class BoothService {
             days.add(start + i);
         }
         boothDto.setDays(days);
+        boothDto.setIsLike(checkIsLike(request, id));
+        boothDto.setLikeCnt(booth.get().getLikes().stream().count());
         return boothDto;
     }
 
@@ -148,7 +160,7 @@ public class BoothService {
                 .location(booth.getLocation())
                 .boothNo(booth.getBoothNo())
                 .introduction(booth.getIntroduction())
-                // TODO : like 갯수와 이미지 추가하기
+                // TODO : 이미지 추가하기
                 .build();
     }
 
@@ -194,8 +206,17 @@ public class BoothService {
                 .location(booth.getLocation())
                 .boothNo(booth.getBoothNo())
                 .introduction(booth.getIntroduction())
-                // TODO : like 갯수와 이미지 추가하기
+                // TODO : 이미지 추가하기
                 .build();
+    }
+
+    private Boolean checkIsLike(HttpServletRequest request, Long id){
+        Optional<Cookie> boothCookie = likesService.findBoothCookie(request, id);
+        if (boothCookie.isPresent()) {
+            return true;
+        } else{
+            return false;
+        }
     }
 
 }
