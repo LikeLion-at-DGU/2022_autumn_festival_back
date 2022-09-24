@@ -23,7 +23,7 @@ public class LikesService {
 
     public Likes create(Long id){
         Optional<Booth> booth = boothRepository.findById(id);
-        if (!booth.isPresent()){
+        if (booth.isEmpty()){
             throw new WrongBoothId();
         }
         String newCookieKey = createCookieKey();

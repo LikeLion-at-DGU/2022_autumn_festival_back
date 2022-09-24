@@ -3,6 +3,7 @@ package likelion.festival.service;
 import likelion.festival.dto.NotificationDto;
 import likelion.festival.entity.Notification;
 import likelion.festival.entity.NotificationType;
+import likelion.festival.exception.WrongNotificationId;
 import likelion.festival.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -21,11 +22,10 @@ public class NotificationService {
 
     private final NotificationRepository notificationRepository;
 
-
     public NotificationDto readNotification(Long id){
         Optional<Notification> notificationOptional = notificationRepository.findById(id);
-        if (!notificationOptional.isPresent()){
-            throw new EntityNotFoundException("해당 공지사항이 없습니다");
+        if (notificationOptional.isEmpty()){
+            throw new WrongNotificationId();
         }
 
         Notification notification = notificationOptional.get();
@@ -43,7 +43,6 @@ public class NotificationService {
         return notificationDto;
     }
 
-
     public List<Notification> readNotificationAll(NotificationType notificationType){
         if (notificationType == null){
             return notificationRepository.findAll();
@@ -57,7 +56,6 @@ public class NotificationService {
         BeanUtils.copyProperties(notificationDto,notification);
         notificationRepository.save(notification);
         return HttpStatus.CREATED.value();
-
     }
 
     @Transactional
@@ -68,8 +66,8 @@ public class NotificationService {
     @Transactional
     public Notification updateNotification(Long id, NotificationDto notificationDto){
         Optional<Notification> notification = notificationRepository.findById(id);
-        if (!notification.isPresent()){
-            throw new EntityNotFoundException("해당 공지사항이 없습니다");
+        if (notification.isEmpty()){
+            throw new WrongNotificationId();
         }
         Notification notification1 = notification.get();
         notification1.setTitle(notificationDto.getTitle());
@@ -79,7 +77,6 @@ public class NotificationService {
         notification1.setModifiedDateTime(notificationDto.getModifiedDateTime());
 
         return notificationRepository.save(notification1);
-
     }
 
 }

@@ -92,7 +92,7 @@ public class BoothService {
     //읽기 ok
     public BoothDto read(HttpServletRequest request, Long id) {
         Optional<Booth> booth = boothRepository.findById(id);
-        if (!booth.isPresent()) {
+        if (booth.isEmpty()) {
             throw new WrongBoothId();
         }
         BoothDto boothDto = entityToBoothDto(booth.get());
@@ -117,7 +117,7 @@ public class BoothService {
     @Transactional
     public Booth update(Long id, BoothDto boothDto) {
         Optional<Booth> booth = boothRepository.findById(id);
-        if (!booth.isPresent()) {
+        if (booth.isEmpty()) {
             throw new WrongBoothId();
         }
         long boothId = booth.get().getId();
@@ -131,7 +131,7 @@ public class BoothService {
     @Transactional
     public String delete(Long id) {
         Optional<Booth> booth = boothRepository.findById(id);
-        if (!booth.isPresent()) {
+        if (booth.isEmpty()) {
             throw new WrongBoothId();
         }
         boothRepository.delete(booth.get());
