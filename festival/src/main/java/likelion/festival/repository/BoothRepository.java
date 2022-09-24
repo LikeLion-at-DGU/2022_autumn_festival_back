@@ -19,4 +19,7 @@ public interface BoothRepository extends JpaRepository<Booth, Long> {
 
     // TODO : 메뉴검색 문 추가
     List<Booth> findByMenus_NameContaining(String menu);
+
+    List<Booth> findByTitle(String title);
+
 }
