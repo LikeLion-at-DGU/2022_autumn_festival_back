@@ -73,10 +73,10 @@ public class BoothService {
 
     //생성 ok
     @Transactional
-    public Long create(BoothDto boothDto) {
+    public Booth create(BoothDto boothDto) {
         Booth booth = boothDtoToEntity(boothDto);
-        boothRepository.save(booth);
-        return booth.getId();
+        Booth newBooth = boothRepository.save(booth);
+        return newBooth;
     }
 
     //읽기 ok
@@ -150,7 +150,7 @@ public class BoothService {
                 .boothNo(boothDto.getBoothNo())
                 .notice(boothDto.getNotice())
                 .content(boothDto.getContent())
-                .imageId(boothDto.getImageId())
+                .images(boothDto.getImages())
                 .startAt(boothDto.getStartAt())
                 .endAt(boothDto.getEndAt())
                 //TODO : 위치 이미지와 소개 이미지 추가
@@ -167,7 +167,7 @@ public class BoothService {
                 .boothNo(booth.getBoothNo())
                 .notice(booth.getNotice())
                 .content(booth.getContent())
-                .imageId(booth.getImageId())
+                .images(booth.getImages())
                 .startAt(booth.getStartAt())
                 .endAt(booth.getEndAt())
                 //TODO : 위치 이미지와 소개 이미지 추가
