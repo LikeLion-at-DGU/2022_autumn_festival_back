@@ -25,12 +25,13 @@ public class BoothService {
     private final BoothRepository boothRepository;
     private final LikesService likesService;
 
-
-    // TODO : 메뉴검색 추가하기
     public List<BoothFilterDto> boothFilterAndSearch(HttpServletRequest request, String search) {
-        List<Booth> booths = boothRepository.findByTitle(search);
+        List<Booth> booths = boothRepository.findByTitleContaining(search);
         if (booths.isEmpty()) {
             booths = boothRepository.findByLocation(search);
+        }
+        if(booths.isEmpty()){
+            booths = boothRepository.findByMenus_NameContaining(search);
         }
         List<BoothFilterDto> boothFilterDtos = booths.stream().map(e -> {
                     LocalDate start = StringToDate(e.getStartAt());
