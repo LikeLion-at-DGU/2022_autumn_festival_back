@@ -129,13 +129,13 @@ public class BoothService {
 
     //삭제
     @Transactional
-    public Integer delete(Long id) {
+    public String delete(Long id) {
         Optional<Booth> booth = boothRepository.findById(id);
         if (!booth.isPresent()) {
             throw new WrongBoothId();
         }
         boothRepository.delete(booth.get());
-        return HttpStatus.OK.value();
+        return "Ok";
     }
 
     //TODO : like, menu, comment 관련 비즈니스 로직 작성하기

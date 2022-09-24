@@ -58,12 +58,13 @@ public class MenuService {
     }
 
     @Transactional
-    public void delete(Long id){
+    public String delete(Long id){
         Optional<Menu> menu = menuRepository.findById(id);
         if (menu.isEmpty()){
-            return; // TODO: likes exception 손 볼 때 같이 할 예정
+            return ""; // TODO: likes exception 손 볼 때 같이 할 예정
         }
         menuRepository.delete(menu.get());
+        return "Ok";
     }
 
     private Menu dtoToEntity(MenuRequestDto menuRequestDto) {
