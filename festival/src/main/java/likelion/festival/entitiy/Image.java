@@ -1,5 +1,9 @@
 package likelion.festival.entitiy;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,11 +25,21 @@ public class Image {
 
     private String storedFilePath;
 
+    @ManyToOne
+    @JsonIgnore
+    private Notification notification;
+
+    @ManyToOne
+    @JsonIgnore
+    private Booth booth;
+
     @Builder
-    public Image(Long id, String originFileName, String serverFileName, String storedFilePath) {
+    public Image(Long id, String originFileName, String serverFileName, String storedFilePath, Notification notification, Booth booth) {
         this.id = id;
         this.originFileName = originFileName;
         this.serverFileName = serverFileName;
         this.storedFilePath = storedFilePath;
+        this.notification = notification;
+        this.booth = booth;
     }
 }
