@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -86,6 +87,17 @@ public class BoothService {
             throw new WrongBoothId();
         }
         BoothDto boothDto = entityToBoothDto(booth.get());
+        List<Integer> days = new ArrayList<>();
+        String startDate = boothDto.getStartAt();
+        String endDate = boothDto.getEndAt();
+        int start = Integer.parseInt(startDate.substring(startDate.length()-2));
+        int end = Integer.parseInt(endDate.substring(startDate.length()-2));
+        int minus = end - start;
+        days.add(start);
+        for(int i = 1; i <= minus; i++){
+            days.add(start + i);
+        }
+        boothDto.setDays(days);
         return boothDto;
     }
 
@@ -118,9 +130,9 @@ public class BoothService {
 
     public HashMap<String, String> festivalDate() {
         HashMap<String, String> date = new HashMap<>();
-        date.put("WED", "2022-09-28");
-        date.put("THU", "2022-09-29");
-        date.put("FRI", "2022-09-30");
+        date.put("1", "2022-09-28");
+        date.put("2", "2022-09-29");
+        date.put("3", "2022-09-30");
         return date;
     }
 
