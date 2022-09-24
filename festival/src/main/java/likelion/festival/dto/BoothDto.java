@@ -5,6 +5,9 @@ import likelion.festival.entitiy.BoothType;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 public class BoothDto {
     private Long id;
@@ -34,6 +37,8 @@ public class BoothDto {
     @NotNull
     private String endAt;
 
+    private List<Integer> days = new ArrayList<>();
+
     private Long imageId;
 
     private long likeCnt;
@@ -41,7 +46,7 @@ public class BoothDto {
     private Boolean isLike;
 
     @Builder
-    public BoothDto(Long id, String title, String introduction, BoothType boothType, String location, Integer boothNo, String notice, String content, String startAt, String endAt, Long imageId) {
+    public BoothDto(Long id, String title, String introduction, BoothType boothType, String location, Integer boothNo, String notice, String content, String startAt, List<Integer> days,String endAt, Long imageId) {
         this.id = id;
         this.title = title;
         this.introduction = introduction;
@@ -52,6 +57,7 @@ public class BoothDto {
         this.content = content;
         this.startAt = startAt;
         this.endAt = endAt;
+        this.days = days;
         this.imageId = imageId;
     }
 
