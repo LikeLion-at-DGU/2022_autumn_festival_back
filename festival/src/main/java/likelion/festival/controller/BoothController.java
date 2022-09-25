@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-@RequestMapping("api/booths")
+@RequestMapping("${app-booth}")
 @RestController
 public class BoothController {
 
