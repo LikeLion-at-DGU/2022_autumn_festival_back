@@ -35,17 +35,8 @@ public class BoothService {
             booths = boothRepository.findByMenus_NameContaining(search);
         }
         List<BoothFilterDto> boothFilterDtos = booths.stream().map(e -> {
-                    LocalDate start = StringToDate(e.getStartAt());
-                    LocalDate end = StringToDate(e.getEndAt());
-                    LocalDate today = LocalDate.now();
                     BoothFilterDto boothFilterDto = entityToFilterDto(e);
-                    if (start.isBefore(today) && end.isAfter(today) || start.isEqual(today) || end.isEqual(today)) {
-                        boothFilterDto.setActive(true);
-                    } else {
-                        boothFilterDto.setActive(false);
-                    }
                     boothFilterDto.setIsLike(checkIsLike(request,e.getId()));
-                    boothFilterDto.setLikeCnt(e.getLikes().stream().count());
                     return boothFilterDto;
                 })
                 .collect(Collectors.toList());
@@ -56,9 +47,9 @@ public class BoothService {
         List<Booth> booths = boothRepository.findAll();
         List<BoothFilterDto> boothFilterDtos = booths.stream()
                 .map(e -> {BoothFilterDto boothFilterDto = entityToFilterDto(e);
-                    boothFilterDto.setLikeCnt(e.getLikes().stream().count());
                     boothFilterDto.setIsLike(checkIsLike(request,e.getId()));
                     return boothFilterDto;})
+                .filter(boothFilterDto -> boothFilterDto.getActive().equals(true))
                 .sorted(Comparator.comparing(BoothFilterDto::getLikeCnt).reversed())
                 .limit(5)
                 .collect(Collectors.toList());
@@ -78,7 +69,6 @@ public class BoothService {
                 .map(e -> {
                     BoothDayLocationDto boothDayLocationDto = entityToDayLocationDto(e);
                     boothDayLocationDto.setIsLike(checkIsLike(request, e.getId()));
-                    boothDayLocationDto.setLikeCnt(e.getLikes().stream().count());
                     return boothDayLocationDto;
                 })
                 .collect(Collectors.toList());
@@ -147,8 +137,6 @@ public class BoothService {
         return "Ok";
     }
 
-    //TODO : like, menu, comment 관련 비즈니스 로직 작성하기
-
     public HashMap<String, String> festivalDate() {
         HashMap<String, String> date = new HashMap<>();
         date.put("1", "2022-09-28");
@@ -169,7 +157,9 @@ public class BoothService {
                 .location(booth.getLocation())
                 .boothNo(booth.getBoothNo())
                 .introduction(booth.getIntroduction())
-                // TODO : 이미지 추가하기
+                .active(checkActive(booth))
+                .likeCnt(booth.getLikes().stream().count())
+                .images(booth.getImages())
                 .build();
     }
 
@@ -186,7 +176,6 @@ public class BoothService {
                 .images(boothDto.getImages())
                 .startAt(boothDto.getStartAt())
                 .endAt(boothDto.getEndAt())
-                //TODO : 위치 이미지와 소개 이미지 추가
                 .build();
     }
 
@@ -214,7 +203,8 @@ public class BoothService {
                 .location(booth.getLocation())
                 .boothNo(booth.getBoothNo())
                 .introduction(booth.getIntroduction())
-                // TODO : 이미지 추가하기
+                .likeCnt(booth.getLikes().stream().count())
+                .images(booth.getImages())
                 .build();
     }
 
@@ -225,6 +215,13 @@ public class BoothService {
         } else{
             return false;
         }
+    }
+
+    private Boolean checkActive(Booth booth){
+        LocalDate start = StringToDate(booth.getStartAt());
+        LocalDate end = StringToDate(booth.getEndAt());
+        LocalDate today = LocalDate.now();
+        return start.isBefore(today) && end.isAfter(today) || start.isEqual(today) || end.isEqual(today);
     }
 
 }
