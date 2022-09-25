@@ -64,7 +64,7 @@ public class ImageService {
             for (MultipartFile image : itemImgList) {
                 String origFilename = image.getOriginalFilename();
                 String servFilename = new MD5Generator(origFilename).toString();
-                String savePath = System.getProperty("user.dir") + "/files";
+                String savePath = System.getProperty("user.dir") + "/src/main/resources/static/";
 
                 if (!new File(savePath).exists()) {
                     try {
