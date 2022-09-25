@@ -8,7 +8,6 @@ import likelion.festival.service.CommentService;
 import likelion.festival.service.ImageService;
 import likelion.festival.service.LikesService;
 import likelion.festival.service.MenuService;
-import likelion.festival.util.MD5Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +41,7 @@ public class BoothController {
     }
 
     @GetMapping
-    public List<BoothDayLocationDto> boothDayLcotion(HttpServletRequest request, @RequestParam String day,
+    public List<BoothDayLocationDto> boothDayLocation(HttpServletRequest request, @RequestParam String day,
                                                      @RequestParam String location){
         return boothService.boothDayLocation(request, day, location);
     }

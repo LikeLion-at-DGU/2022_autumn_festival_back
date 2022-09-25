@@ -40,5 +40,4 @@ public class Notification extends BaseEntity{
         this.notificationType = notificationType;
         this.images = images;
     }
-
 }

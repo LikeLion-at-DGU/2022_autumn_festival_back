@@ -4,11 +4,9 @@ import likelion.festival.dto.BoothDayLocationDto;
 import likelion.festival.dto.BoothDto;
 import likelion.festival.dto.BoothFilterDto;
 import likelion.festival.entity.Booth;
-import likelion.festival.entity.Image;
 import likelion.festival.exception.WrongBoothId;
 import likelion.festival.repository.BoothRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,18 +32,17 @@ public class BoothService {
         if(booths.isEmpty()){
             booths = boothRepository.findByMenus_NameContaining(search);
         }
-        List<BoothFilterDto> boothFilterDtos = booths.stream().map(e -> {
+        return booths.stream().map(e -> {
                     BoothFilterDto boothFilterDto = entityToFilterDto(e);
                     boothFilterDto.setIsLike(checkIsLike(request,e.getId()));
                     return boothFilterDto;
                 })
                 .collect(Collectors.toList());
-        return boothFilterDtos;
     }
 
     public List<BoothFilterDto> boothTopFive(HttpServletRequest request) {
         List<Booth> booths = boothRepository.findAll();
-        List<BoothFilterDto> boothFilterDtos = booths.stream()
+        return booths.stream()
                 .map(e -> {BoothFilterDto boothFilterDto = entityToFilterDto(e);
                     boothFilterDto.setIsLike(checkIsLike(request,e.getId()));
                     return boothFilterDto;})
@@ -53,7 +50,6 @@ public class BoothService {
                 .sorted(Comparator.comparing(BoothFilterDto::getLikeCnt).reversed())
                 .limit(5)
                 .collect(Collectors.toList());
-        return boothFilterDtos;
     }
 
     //날짜와 장소로 필터링 하는 기능 ok
@@ -61,7 +57,7 @@ public class BoothService {
         HashMap<String, String> date = festivalDate();
         LocalDate today = StringToDate(date.get(day));
         List<Booth> booths = boothRepository.findByLocation(location);
-        List<BoothDayLocationDto> result = booths.stream()
+        return booths.stream()
                 .filter(e -> StringToDate(e.getStartAt()).isBefore(today)
                         && StringToDate(e.getEndAt()).isAfter(today)
                         || StringToDate(e.getStartAt()).isEqual(today)
@@ -72,21 +68,19 @@ public class BoothService {
                     return boothDayLocationDto;
                 })
                 .collect(Collectors.toList());
-        return result;
     }
 
     //생성 ok
     @Transactional
     public Booth create(BoothDto boothDto) {
         Booth booth = boothDtoToEntity(boothDto);
-        Booth newBooth = boothRepository.save(booth);
-        return newBooth;
+        return boothRepository.save(booth);
     }
 
     //읽기 ok
     public BoothDto read(HttpServletRequest request, Long id) {
         Optional<Booth> booth = boothRepository.findById(id);
-        if (!booth.isPresent()) {
+        if (booth.isEmpty()) {
             throw new WrongBoothId();
         }
         BoothDto boothDto = entityToBoothDto(booth.get());
@@ -110,7 +104,7 @@ public class BoothService {
     @Transactional
     public Booth update(Long id, BoothDto boothDto) {
         Optional<Booth> booth = boothRepository.findById(id);
-        if (!booth.isPresent()) {
+        if (booth.isEmpty()) {
             throw new WrongBoothId();
         }
         long boothId = booth.get().getId();
@@ -124,7 +118,7 @@ public class BoothService {
     @Transactional
     public String delete(Long id) {
         Optional<Booth> booth = boothRepository.findById(id);
-        if (!booth.isPresent()) {
+        if (booth.isEmpty()) {
             throw new WrongBoothId();
         }
         boothRepository.delete(booth.get());
@@ -152,7 +146,7 @@ public class BoothService {
                 .boothNo(booth.getBoothNo())
                 .introduction(booth.getIntroduction())
                 .active(checkActive(booth))
-                .likeCnt(booth.getLikes().stream().count())
+                .likeCnt((long) booth.getLikes().size())
                 .images(booth.getImages())
                 .build();
     }
@@ -185,7 +179,7 @@ public class BoothService {
                 .content(booth.getContent())
                 .startAt(booth.getStartAt())
                 .endAt(booth.getEndAt())
-                .likeCnt(booth.getLikes().stream().count())
+                .likeCnt(booth.getLikes().size())
                 .images(booth.getImages())
                 .build();
     }
@@ -198,7 +192,7 @@ public class BoothService {
                 .location(booth.getLocation())
                 .boothNo(booth.getBoothNo())
                 .introduction(booth.getIntroduction())
-                .likeCnt(booth.getLikes().stream().count())
+                .likeCnt((long) booth.getLikes().size())
                 .images(booth.getImages())
                 .build();
     }

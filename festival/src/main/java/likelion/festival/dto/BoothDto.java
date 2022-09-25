@@ -38,7 +38,7 @@ public class BoothDto {
     @NotNull
     private String endAt;
 
-    private List<Integer> days = new ArrayList<>();
+    private List<Integer> days;
 
     private long likeCnt;
 
@@ -65,6 +65,4 @@ public class BoothDto {
         this.images =images;
         this.likeCnt = likeCnt;
     }
-
-    //TODO : 위치 이미지, 이미지 필드 추가
 }
