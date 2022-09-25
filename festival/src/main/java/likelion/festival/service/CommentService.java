@@ -37,8 +37,7 @@ public class CommentService {
         if (byId.isEmpty()) {
             throw new WrongBoothId();
         }
-        Booth booth = byId.get();
-        List<Comment> comments = booth.getComments();
+        List<Comment> comments = commentRepository.findByBooth_IdOrderByCreatedDateTimeDesc(boothId);
         return getDtoList(comments);
     }
 
