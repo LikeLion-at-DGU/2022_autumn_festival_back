@@ -27,7 +27,7 @@ public class ImageService {
             for (MultipartFile image : itemImgList) {
                 String origFilename = image.getOriginalFilename();
                 String servFilename = new MD5Generator(origFilename).toString();
-                String savePath = System.getProperty("user.dir") + "/src/main/resources/static/";
+                String savePath = System.getProperty("user.dir") + "/src/main/resources/";
 
                 ImageDto imageDto = imageSaveSetting(image, origFilename, servFilename, savePath);
                 imageDto.setNotification(notification);
@@ -44,7 +44,7 @@ public class ImageService {
             for (MultipartFile image : itemImgList) {
                 String origFilename = image.getOriginalFilename();
                 String servFilename = new MD5Generator(origFilename).toString();
-                String savePath = System.getProperty("user.dir") + "/src/main/resources/static/";
+                String savePath = System.getProperty("user.dir") + "/src/main/resources/";
 
                 ImageDto imageDto = imageSaveSetting(image, origFilename, servFilename, savePath);
                 imageDto.setBooth(booth);
@@ -63,12 +63,13 @@ public class ImageService {
                 e.getStackTrace();
             }
         }
-        String imagePath = savePath + "/" + servFilename + ".jpg";
+        String imagePath = savePath + "/static/" + servFilename + ".jpg";
+        String responsePath = "/static/" + servFilename + ".jpg";
         image.transferTo(new File(imagePath));
         ImageDto imageDto = new ImageDto();
         imageDto.setOriginFileName(origFilename);
         imageDto.setServerFileName(servFilename);
-        imageDto.setStoredFilePath(imagePath);
+        imageDto.setStoredFilePath(responsePath);
 
         return imageDto;
     }
