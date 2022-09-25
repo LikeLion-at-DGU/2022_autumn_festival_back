@@ -2,8 +2,11 @@ package likelion.festival.dto;
 
 import com.sun.istack.NotNull;
 import likelion.festival.entity.BoothType;
+import likelion.festival.entity.Image;
 import lombok.Builder;
 import lombok.Data;
+
+import java.util.List;
 
 @Builder
 @Data
@@ -29,7 +32,5 @@ public class BoothDayLocationDto {
 
     private Boolean isLike;
 
-    /*
-    TODO : 이미지 필드 추가
-     */
+    private List<Image> images;
 }
