@@ -3,6 +3,7 @@ package likelion.festival.service;
 import likelion.festival.dto.NotificationDto;
 import likelion.festival.entity.Notification;
 import likelion.festival.entity.NotificationType;
+import likelion.festival.exception.WrongNotificationId;
 import likelion.festival.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -20,11 +21,10 @@ public class NotificationService {
 
     private final NotificationRepository notificationRepository;
 
-
     public NotificationDto readNotification(Long id){
         Optional<Notification> notificationOptional = notificationRepository.findById(id);
         if (notificationOptional.isEmpty()){
-            throw new EntityNotFoundException("해당 공지사항이 없습니다");
+            throw new WrongNotificationId();
         }
 
         Notification notification = notificationOptional.get();
@@ -40,7 +40,6 @@ public class NotificationService {
                 .modifiedDateTime(notification.getModifiedDateTime())
                 .build();
     }
-
 
     public List<Notification> readNotificationAll(NotificationType notificationType){
         if (notificationType == null){
@@ -65,7 +64,7 @@ public class NotificationService {
     public Notification updateNotification(Long id, NotificationDto notificationDto){
         Optional<Notification> notification = notificationRepository.findById(id);
         if (notification.isEmpty()){
-            throw new EntityNotFoundException("해당 공지사항이 없습니다");
+            throw new WrongNotificationId();
         }
         Notification notification1 = notification.get();
         notification1.setTitle(notificationDto.getTitle());

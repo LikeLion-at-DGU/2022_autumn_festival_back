@@ -1,8 +1,5 @@
 package likelion.festival.exception.handler.advice;
-import likelion.festival.exception.ExceptionCode;
-import likelion.festival.exception.WrongBoothId;
-import likelion.festival.exception.WrongCommentId;
-import likelion.festival.exception.WrongPassword;
+import likelion.festival.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -19,13 +16,25 @@ public class ExControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(WrongCommentId.class)
-    public ErrorResult wrongCommentId(WrongCommentId e){
+    public ErrorResult wrongCommentId(WrongCommentId e) {
         return new ErrorResult(ExceptionCode.WRONG_COMMENT_ID);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(WrongPassword.class)
-    public ErrorResult wrongPassword(WrongPassword e){
+    public ErrorResult wrongPassword(WrongPassword e) {
         return new ErrorResult(ExceptionCode.WRONG_PASSWORD);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(WrongNotificationId.class)
+    public ErrorResult wrongPassword(WrongNotificationId e) {
+        return new ErrorResult(ExceptionCode.WRONG_NOTIFICATION_ID);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(WrongMenuId.class)
+    public ErrorResult wrongMenuId(WrongMenuId e) {
+        return new ErrorResult(ExceptionCode.WRONG_MENU_ID);
     }
 }

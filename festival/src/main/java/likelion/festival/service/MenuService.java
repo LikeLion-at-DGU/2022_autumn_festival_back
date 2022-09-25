@@ -5,6 +5,7 @@ import likelion.festival.dto.MenuResponseDto;
 import likelion.festival.entity.Booth;
 import likelion.festival.entity.Menu;
 import likelion.festival.exception.WrongBoothId;
+import likelion.festival.exception.WrongMenuId;
 import likelion.festival.repository.BoothRepository;
 import likelion.festival.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,6 @@ public class MenuService {
     @Transactional
     public MenuResponseDto create(Long boothId, MenuRequestDto menuRequestDto){
         Optional<Booth> booth = boothRepository.findById(boothId);
-
         if(booth.isEmpty()){
             throw new WrongBoothId();
         }
@@ -49,7 +49,7 @@ public class MenuService {
     public MenuResponseDto update(Long id, MenuRequestDto menuRequestDto){
         Optional<Menu> menu = menuRepository.findById(id);
         if (menu.isEmpty()){
-            return null; // TODO: likes exception 손 볼 때 같이 할 예정
+            throw new WrongMenuId();
         }
         menuRequestDto.setId(menu.get().getId());
         Menu updateMenu = dtoToEntity(menuRequestDto);
@@ -61,7 +61,7 @@ public class MenuService {
     public String delete(Long id){
         Optional<Menu> menu = menuRepository.findById(id);
         if (menu.isEmpty()){
-            return ""; // TODO: likes exception 손 볼 때 같이 할 예정
+            throw new WrongMenuId();
         }
         menuRepository.delete(menu.get());
         return "Ok";

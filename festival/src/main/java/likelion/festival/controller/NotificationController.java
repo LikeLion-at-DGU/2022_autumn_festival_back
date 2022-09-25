@@ -48,8 +48,8 @@ public class NotificationController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Notification> updateNotification(
-            @RequestBody NotificationDto request, @PathVariable Long id){
+
+    public ResponseEntity<Notification> updateNotification(@RequestBody NotificationDto request, @PathVariable Long id){
         return ResponseEntity.ok(notificationService.updateNotification(id, request));
     }
 
