@@ -16,13 +16,13 @@ public class ExControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(WrongCommentId.class)
-    public ErrorResult wrongCommentId(WrongCommentId e){
+    public ErrorResult wrongCommentId(WrongCommentId e) {
         return new ErrorResult(ExceptionCode.WRONG_COMMENT_ID);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(WrongPassword.class)
-    public ErrorResult wrongPassword(WrongPassword e){
+    public ErrorResult wrongPassword(WrongPassword e) {
         return new ErrorResult(ExceptionCode.WRONG_PASSWORD);
     }
 
@@ -30,5 +30,16 @@ public class ExControllerAdvice {
     @ExceptionHandler(WrongLikesKey.class)
     public ErrorResult wrongLikeKey(WrongLikesKey e) {
         return new ErrorResult(ExceptionCode.WRONG_LIKE_KEY);
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(WrongNotificationId.class)
+    public ErrorResult wrongPassword(WrongNotificationId e) {
+        return new ErrorResult(ExceptionCode.WRONG_NOTIFICATION_ID);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(WrongMenuId.class)
+    public ErrorResult wrongMenuId(WrongMenuId e) {
+        return new ErrorResult(ExceptionCode.WRONG_MENU_ID);
     }
 }
