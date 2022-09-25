@@ -37,3 +37,5 @@ out/
 .vscode/
 
 **/main/resources/application-KEY.yml
+
+**/main/resources/application-path.yml

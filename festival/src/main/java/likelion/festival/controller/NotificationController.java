@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api/notifications")
+@RequestMapping(value = "${app-notification}")
 @RequiredArgsConstructor
 public class NotificationController {
     private final NotificationService notificationService;
