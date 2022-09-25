@@ -1,19 +1,17 @@
 package likelion.festival.controller;
 
-import likelion.festival.dto.ImageDto;
 import likelion.festival.dto.NotificationDto;
 import likelion.festival.entity.Notification;
 import likelion.festival.entity.NotificationType;
 import likelion.festival.service.ImageService;
 import likelion.festival.service.NotificationService;
-import likelion.festival.util.MD5Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/notifications")
@@ -33,40 +31,13 @@ public class NotificationController {
     }
 
     @PostMapping
-    public Integer createNotification(@RequestPart(value = "images",required = false) MultipartFile images, @RequestParam(value = "notification") NotificationDto notificationDto){
-        if (images==null){
-            notificationService.createNotification(notificationDto);
+    public Integer createNotification(@RequestPart(value = "imgList",required = false) List<MultipartFile> imgList,
+                                      @RequestParam(value = "notification") NotificationDto notificationDto){
+        Notification notification = notificationService.createNotification(notificationDto);
+        if (imgList==null){
             return HttpStatus.OK.value();
         }
-        try {
-            String origFilename = images.getOriginalFilename();
-            String servFilename = new MD5Generator(origFilename).toString();
-
-            String savePath =System.getProperty("user.dir")+"/files";
-
-
-            if (!new File(savePath).exists()){
-                try {
-                    new File(savePath).mkdir();
-                }
-                catch (Exception e){
-                    e.getStackTrace();
-                }
-            }
-            String imagePath = savePath + "/" + servFilename+".jpg";
-            images.transferTo(new File(imagePath));
-
-            ImageDto imageDto = new ImageDto();
-            imageDto.setOriginFileName(origFilename);
-            imageDto.setServerFileName(servFilename);
-            imageDto.setStoredFilePath(imagePath);
-
-            Long imageId = imageService.saveImage(imageDto);
-            notificationDto.setImageId(imageId);
-            notificationService.createNotification(notificationDto);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        imageService.saveNotificationImage(imgList, notification);
         return HttpStatus.OK.value();
     }
 
@@ -77,6 +48,7 @@ public class NotificationController {
     }
 
     @PutMapping("{id}")
+
     public ResponseEntity<Notification> updateNotification(@RequestBody NotificationDto request, @PathVariable Long id){
         return ResponseEntity.ok(notificationService.updateNotification(id, request));
     }

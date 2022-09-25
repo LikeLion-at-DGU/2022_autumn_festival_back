@@ -14,7 +14,6 @@ import likelion.festival.repository.CommentRepository;
 import likelion.festival.security.Encrypt;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,8 +37,7 @@ public class CommentService {
         if (byId.isEmpty()) {
             throw new WrongBoothId();
         }
-        Booth booth = byId.get();
-        List<Comment> comments = booth.getComments();
+        List<Comment> comments = commentRepository.findByBooth_IdOrderByCreatedDateTimeDesc(boothId);
         return getDtoList(comments);
     }
 
@@ -109,7 +107,7 @@ public class CommentService {
 
 
     private List<CommentResponseDto> getDtoList(List<Comment> all) {
-        return all.stream().map(comment -> entityToDto(comment))
+        return all.stream().map(this::entityToDto)
                 .collect(Collectors.toList());
     }
 

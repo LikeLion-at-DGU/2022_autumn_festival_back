@@ -7,7 +7,6 @@ import likelion.festival.exception.WrongNotificationId;
 import likelion.festival.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,17 +29,16 @@ public class NotificationService {
 
         Notification notification = notificationOptional.get();
 
-        NotificationDto notificationDto = NotificationDto.builder()
+        return NotificationDto.builder()
                 .id(notification.getId())
                 .title(notification.getTitle())
                 .writer(notification.getWriter())
                 .content(notification.getContent())
                 .notificationType(notification.getNotificationType())
-                .imageId(notification.getImageId())
+                .images(notification.getImages())
                 .createdDateTime(notification.getCreatedDateTime())
                 .modifiedDateTime(notification.getModifiedDateTime())
                 .build();
-        return notificationDto;
     }
 
     public List<Notification> readNotificationAll(NotificationType notificationType){
@@ -51,11 +49,10 @@ public class NotificationService {
     }
 
     @Transactional
-    public Integer createNotification(NotificationDto notificationDto){
+    public Notification createNotification(NotificationDto notificationDto){
         Notification notification = new Notification();
         BeanUtils.copyProperties(notificationDto,notification);
-        notificationRepository.save(notification);
-        return HttpStatus.CREATED.value();
+        return notificationRepository.save(notification);
     }
 
     @Transactional
@@ -78,5 +75,4 @@ public class NotificationService {
 
         return notificationRepository.save(notification1);
     }
-
 }
