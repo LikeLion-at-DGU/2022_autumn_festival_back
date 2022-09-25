@@ -2,7 +2,6 @@ package likelion.festival.dto;
 
 import com.sun.istack.NotNull;
 import likelion.festival.entity.Image;
-import likelion.festival.entity.Notification;
 import likelion.festival.entity.NotificationType;
 import lombok.Builder;
 import lombok.Data;

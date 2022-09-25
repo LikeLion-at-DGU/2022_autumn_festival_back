@@ -6,7 +6,6 @@ import likelion.festival.entity.NotificationType;
 import likelion.festival.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,13 +23,13 @@ public class NotificationService {
 
     public NotificationDto readNotification(Long id){
         Optional<Notification> notificationOptional = notificationRepository.findById(id);
-        if (!notificationOptional.isPresent()){
+        if (notificationOptional.isEmpty()){
             throw new EntityNotFoundException("해당 공지사항이 없습니다");
         }
 
         Notification notification = notificationOptional.get();
 
-        NotificationDto notificationDto = NotificationDto.builder()
+        return NotificationDto.builder()
                 .id(notification.getId())
                 .title(notification.getTitle())
                 .writer(notification.getWriter())
@@ -40,7 +39,6 @@ public class NotificationService {
                 .createdDateTime(notification.getCreatedDateTime())
                 .modifiedDateTime(notification.getModifiedDateTime())
                 .build();
-        return notificationDto;
     }
 
 
@@ -55,8 +53,7 @@ public class NotificationService {
     public Notification createNotification(NotificationDto notificationDto){
         Notification notification = new Notification();
         BeanUtils.copyProperties(notificationDto,notification);
-        Notification newNotification = notificationRepository.save(notification);
-        return newNotification;
+        return notificationRepository.save(notification);
     }
 
     @Transactional
@@ -67,7 +64,7 @@ public class NotificationService {
     @Transactional
     public Notification updateNotification(Long id, NotificationDto notificationDto){
         Optional<Notification> notification = notificationRepository.findById(id);
-        if (!notification.isPresent()){
+        if (notification.isEmpty()){
             throw new EntityNotFoundException("해당 공지사항이 없습니다");
         }
         Notification notification1 = notification.get();
@@ -78,7 +75,5 @@ public class NotificationService {
         notification1.setModifiedDateTime(notificationDto.getModifiedDateTime());
 
         return notificationRepository.save(notification1);
-
     }
-
 }

@@ -1,19 +1,16 @@
 package likelion.festival.controller;
 
-import likelion.festival.dto.ImageDto;
 import likelion.festival.dto.NotificationDto;
 import likelion.festival.entity.Notification;
 import likelion.festival.entity.NotificationType;
 import likelion.festival.service.ImageService;
 import likelion.festival.service.NotificationService;
-import likelion.festival.util.MD5Generator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.List;
 
 @RestController
@@ -34,8 +31,8 @@ public class NotificationController {
     }
 
     @PostMapping
-    public Integer createNotification(@RequestPart(value = "imgList",required = false) List<MultipartFile> imgList, @RequestParam(value = "notification") NotificationDto notificationDto){
-
+    public Integer createNotification(@RequestPart(value = "imgList",required = false) List<MultipartFile> imgList,
+                                      @RequestParam(value = "notification") NotificationDto notificationDto){
         Notification notification = notificationService.createNotification(notificationDto);
         if (imgList==null){
             return HttpStatus.OK.value();
@@ -52,8 +49,7 @@ public class NotificationController {
 
     @PutMapping("{id}")
     public ResponseEntity<Notification> updateNotification(
-            @RequestBody NotificationDto request, @PathVariable Long id
-    ){
+            @RequestBody NotificationDto request, @PathVariable Long id){
         return ResponseEntity.ok(notificationService.updateNotification(id, request));
     }
 
