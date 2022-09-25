@@ -34,7 +34,7 @@ public class ExControllerAdvice {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(WrongMenuId.class)
-    public ErrorResult wrongPassword(WrongMenuId e) {
+    public ErrorResult wrongMenuId(WrongMenuId e) {
         return new ErrorResult(ExceptionCode.WRONG_MENU_ID);
     }
 }
