@@ -210,11 +210,7 @@ public class BoothService {
 
     private Boolean checkIsLike(HttpServletRequest request, Long id){
         Optional<Cookie> boothCookie = likesService.findBoothCookie(request, id);
-        if (boothCookie.isPresent()) {
-            return true;
-        } else{
-            return false;
-        }
+        return boothCookie.isPresent();
     }
 
     private Boolean checkActive(Booth booth){
