@@ -103,12 +103,6 @@ public class BoothService {
         }
         boothDto.setDays(days);
         boothDto.setIsLike(checkIsLike(request, id));
-        boothDto.setLikeCnt(booth.get().getLikes().stream().count());
-        if (booth.get().getImages().isEmpty()){
-            boothDto.setImages(new ArrayList<>());
-            return boothDto;
-        }
-        boothDto.setImages(booth.get().getImages());
         return boothDto;
     }
 
@@ -191,7 +185,8 @@ public class BoothService {
                 .content(booth.getContent())
                 .startAt(booth.getStartAt())
                 .endAt(booth.getEndAt())
-                //TODO : 위치 이미지와 소개 이미지 추가
+                .likeCnt(booth.getLikes().stream().count())
+                .images(booth.getImages())
                 .build();
     }
 

@@ -47,7 +47,10 @@ public class BoothDto {
     private List<Image> images;
 
     @Builder
-    public BoothDto(Long id, String title, String introduction, BoothType boothType, String location, Integer boothNo, String notice, String content, String startAt, List<Integer> days,String endAt, List<Image> images) {
+    public BoothDto(Long id, String title, String introduction, BoothType boothType,
+                    String location, Integer boothNo, String notice, String content,
+                    String startAt, List<Integer> days,String endAt, List<Image> images,
+                    long likeCnt) {
         this.id = id;
         this.title = title;
         this.introduction = introduction;
@@ -60,6 +63,7 @@ public class BoothDto {
         this.endAt = endAt;
         this.days = days;
         this.images =images;
+        this.likeCnt = likeCnt;
     }
 
     //TODO : 위치 이미지, 이미지 필드 추가
