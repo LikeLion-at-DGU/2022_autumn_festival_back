@@ -35,11 +35,11 @@ public class LikesService {
 
     public void delete(Long boothId, String cookieKey) {
         Optional<Booth> booth = boothRepository.findById(boothId);
-        if (!booth.isPresent()) {
+        if (booth.isEmpty()) {
             throw new WrongBoothId();
         }
         Optional<Likes> likes = likesRepository.findByCookieKey(cookieKey);
-        if (!likes.isPresent()){
+        if (likes.isEmpty()){
             throw new WrongLikesKey();
         }
         likesRepository.deleteById(likes.get().getId());
@@ -49,7 +49,7 @@ public class LikesService {
         while (true) {
             String cookieKey = createRandomString();
             Optional<Likes> likes = likesRepository.findByCookieKey(cookieKey);
-            if (!likes.isPresent()){
+            if (likes.isEmpty()){
                 return cookieKey;
             }
         }
