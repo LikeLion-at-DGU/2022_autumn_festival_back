@@ -4,8 +4,12 @@ import likelion.festival.entity.Notification;
 import likelion.festival.entity.NotificationType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface NotificationRepository extends JpaRepository<Notification,Long> {
-    List<Notification> findByNotificationType(NotificationType notificationType);
+
+    @Override
+    ArrayList<Notification> findAll();
+    ArrayList<Notification> findByNotificationType(NotificationType notificationType);
 }
