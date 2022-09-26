@@ -26,6 +26,11 @@ public class ExControllerAdvice {
         return new ErrorResult(ExceptionCode.WRONG_PASSWORD);
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(WrongLikesKey.class)
+    public ErrorResult wrongLikeKey(WrongLikesKey e) {
+        return new ErrorResult(ExceptionCode.WRONG_LIKE_KEY);}
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(WrongNotificationId.class)
     public ErrorResult wrongPassword(WrongNotificationId e) {

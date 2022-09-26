@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-@RequestMapping("api/booths")
+@RequestMapping("${app-booth}")
 @RestController
 public class BoothController {
 
@@ -72,12 +72,13 @@ public class BoothController {
     }
 
     @PostMapping("/{id}/likes")
-    public void likeCreate(@PathVariable Long id, HttpServletResponse response){
-        Likes likes = likesService.create(id);
+    public LikesResponseDto likeCreate(@PathVariable Long id, HttpServletResponse response){
+        LikesResponseDto likes = likesService.create(id);
         Cookie keyCookie = new Cookie(id.toString(), likes.getCookieKey());
         keyCookie.setMaxAge(7 * 60 * 60 * 24);
         keyCookie.setPath("/");
         response.addCookie(keyCookie);
+        return likes;
     }
 
     @DeleteMapping("/{id}/likes")
