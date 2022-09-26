@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,8 +29,7 @@ public class NotificationService {
         }
 
         Notification notification = notificationOptional.get();
-
-        return NotificationDto.builder()
+        NotificationDto notificationDto = NotificationDto.builder()
                 .id(notification.getId())
                 .title(notification.getTitle())
                 .writer(notification.getWriter())
@@ -39,13 +39,44 @@ public class NotificationService {
                 .createdDateTime(notification.getCreatedDateTime())
                 .modifiedDateTime(notification.getModifiedDateTime())
                 .build();
+
+        return notificationDto;
     }
 
-    public List<Notification> readNotificationAll(NotificationType notificationType){
+    public List<NotificationDto> readNotificationAll(NotificationType notificationType){
+        ArrayList<NotificationDto> notificationDtos = new ArrayList<>();
         if (notificationType == null){
-            return notificationRepository.findAll();
+            ArrayList<Notification> notifications = notificationRepository.findAll();
+            for (Notification notification: notifications){
+                NotificationDto notificationDto = NotificationDto.builder()
+                        .id(notification.getId())
+                        .title(notification.getTitle())
+                        .writer(notification.getWriter())
+                        .content(notification.getContent())
+                        .notificationType(notification.getNotificationType())
+                        .images(notification.getImages())
+                        .createdDateTime(notification.getCreatedDateTime())
+                        .modifiedDateTime(notification.getModifiedDateTime())
+                        .build();
+                notificationDtos.add(notificationDto);
+            }
+            return  notificationDtos;
+         }
+        ArrayList<Notification> notifications = notificationRepository.findByNotificationType(notificationType);
+        for (Notification notification: notifications){
+            NotificationDto notificationDto = NotificationDto.builder()
+                    .id(notification.getId())
+                    .title(notification.getTitle())
+                    .writer(notification.getWriter())
+                    .content(notification.getContent())
+                    .notificationType(notification.getNotificationType())
+                    .images(notification.getImages())
+                    .createdDateTime(notification.getCreatedDateTime())
+                    .modifiedDateTime(notification.getModifiedDateTime())
+                    .build();
+            notificationDtos.add(notificationDto);
         }
-        return notificationRepository.findByNotificationType(notificationType);
+        return notificationDtos;
     }
 
     @Transactional
