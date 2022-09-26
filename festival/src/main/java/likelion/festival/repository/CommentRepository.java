@@ -7,5 +7,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    List<Comment> findByBooth_IdOrderByCreatedDateTimeDesc(Long id);
+    List<Comment> findByBooth_IdAndActiveOrderByCreatedDateTimeDesc(Long id,Boolean active);
 }

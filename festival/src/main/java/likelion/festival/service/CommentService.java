@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,12 +38,12 @@ public class CommentService {
         if (byId.isEmpty()) {
             throw new WrongBoothId();
         }
-        List<Comment> comments = commentRepository.findByBooth_IdOrderByCreatedDateTimeDesc(boothId);
+        List<Comment> comments = commentRepository.findByBooth_IdAndActiveOrderByCreatedDateTimeDesc(boothId, Boolean.TRUE);
         return getDtoList(comments);
     }
 
     @Transactional
-    public CommentResponseDto create(Long boothId, CommentRequestDto commentRequestDto) {
+    public CommentResponseDto create(Long boothId, CommentRequestDto commentRequestDto, HttpServletRequest request) {
         Optional<Booth> byId = boothRepository.findById(boothId);
 
         if (byId.isEmpty()) {
@@ -50,6 +51,8 @@ public class CommentService {
         }
         Booth booth = byId.get();
         commentRequestDto.setBooth(booth);
+        commentRequestDto.setIp(getRemoteAddr(request));
+        commentRequestDto.setActive(Boolean.TRUE);
         Comment comment = dtoToEntity(commentRequestDto);
         Comment save = commentRepository.save(comment);
         return entityToDto(save);
@@ -65,7 +68,7 @@ public class CommentService {
         if (!comment.getPassword().equals(getEncPwd(password.getPassword()))) {
             throw new WrongPassword();
         }
-        commentRepository.deleteById(commentId);
+        comment.setActivte(Boolean.FALSE);
         return "Ok";
     }
 
@@ -75,7 +78,8 @@ public class CommentService {
         if (byId.isEmpty()) {
             throw new WrongCommentId();
         }
-        commentRepository.deleteById(commentId);
+        Comment comment = byId.get();
+        comment.setActivte(Boolean.FALSE);
         return "Ok";
     }
 
@@ -88,6 +92,8 @@ public class CommentService {
                 .password(enc_pwd)
                 .content(commentRequestDto.getContent())
                 .booth(commentRequestDto.getBooth())
+                .ip(commentRequestDto.getIp())
+                .active(commentRequestDto.getActive())
                 .build();
     }
 
@@ -95,6 +101,37 @@ public class CommentService {
     private String getEncPwd(String password) {
         return this.encrypt.getEncrypt(password);
     }
+
+    public static String getRemoteAddr(HttpServletRequest request) {
+        String ip = null;
+        ip = request.getHeader("X-Forwarded-For");
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_CLIENT_IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("X-Real-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("X-RealIP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("REMOTE_ADDR");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        return ip;
+    }
+
 
     public CommentResponseDto entityToDto(Comment comment) {
         return CommentResponseDto.builder()

@@ -14,7 +14,6 @@ public class CommentResponseDto {
 
     private String writer;
 
-
     private String content;
 
     private LocalDateTime createdDateTime;

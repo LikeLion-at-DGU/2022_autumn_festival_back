@@ -101,8 +101,8 @@ public class BoothController {
     }
 
     @PostMapping("{id}/comments")
-    public CommentResponseDto createComment(@PathVariable Long id, @RequestBody CommentRequestDto commentRequestDto){
-        return commentService.create(id, commentRequestDto);
+    public CommentResponseDto createComment(@PathVariable Long id, @RequestBody CommentRequestDto commentRequestDto, HttpServletRequest request){
+        return commentService.create(id, commentRequestDto, request);
     }
 
     @GetMapping("{id}/comments")
