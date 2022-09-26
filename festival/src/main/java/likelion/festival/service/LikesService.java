@@ -1,5 +1,6 @@
 package likelion.festival.service;
 
+import likelion.festival.dto.LikesResponseDto;
 import likelion.festival.entity.Booth;
 import likelion.festival.entity.Likes;
 import likelion.festival.exception.WrongBoothId;
@@ -21,16 +22,16 @@ public class LikesService {
     private final LikesRepository likesRepository;
     private final BoothRepository boothRepository;
 
-    public Likes create(Long id){
+    public LikesResponseDto create(Long id){
         Optional<Booth> booth = boothRepository.findById(id);
         if (booth.isEmpty()){
             throw new WrongBoothId();
         }
         String newCookieKey = createCookieKey();
         Likes likes = Likes.builder().booth(booth.get()).cookieKey(newCookieKey).build();
-        likesRepository.save(likes);
+        Likes newLikes = likesRepository.save(likes);
 
-        return likes;
+        return entityToDto(newLikes);
     }
 
     public void delete(Long boothId, String cookieKey) {
@@ -75,5 +76,12 @@ public class LikesService {
             }
         }
         return Optional.empty();
+    }
+
+    private LikesResponseDto entityToDto(Likes likes){
+        return LikesResponseDto.builder()
+                .boothId(likes.getBooth().getId())
+                .cookieKey(likes.getCookieKey())
+                .build();
     }
 }
