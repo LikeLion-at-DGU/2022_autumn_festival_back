@@ -32,7 +32,7 @@ public class NotificationController {
 
     @PostMapping
     public Integer createNotification(@RequestPart(value = "imgList",required = false) List<MultipartFile> imgList,
-                                      @RequestParam(value = "notification") NotificationDto notificationDto){
+                                      @RequestParam(value = "notification", required = false) NotificationDto notificationDto){
         Notification notification = notificationService.createNotification(notificationDto);
         if (imgList==null){
             return HttpStatus.OK.value();
