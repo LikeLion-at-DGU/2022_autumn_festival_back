@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.CookieGenerator;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -74,10 +75,8 @@ public class BoothController {
     @PostMapping("/{id}/likes")
     public LikesResponseDto likeCreate(@PathVariable Long id, HttpServletResponse response){
         LikesResponseDto likes = likesService.create(id);
-        Cookie keyCookie = new Cookie(id.toString(), likes.getCookieKey());
-        keyCookie.setMaxAge(7 * 60 * 60 * 24);
-        keyCookie.setPath("/");
-        response.addCookie(keyCookie);
+        response.setHeader("Set-Cookie",id.toString() + "=" + likes.getCookieKey()
+                + ";Max-Age=432000;Path=/;SameSite=None;");
         return likes;
     }
 
