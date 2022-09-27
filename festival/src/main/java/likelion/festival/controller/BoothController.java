@@ -75,8 +75,10 @@ public class BoothController {
     @PostMapping("/{id}/likes")
     public LikesResponseDto likeCreate(@PathVariable Long id, HttpServletResponse response){
         LikesResponseDto likes = likesService.create(id);
-        response.setHeader("Set-Cookie",id.toString() + "=" + likes.getCookieKey()
-                + ";Max-Age=432000;Path=/;SameSite=None;");
+        Cookie keyCookie = new Cookie(id.toString(), likes.getCookieKey());
+        keyCookie.setMaxAge(7 * 60 * 60 * 24);
+        keyCookie.setPath("/");
+        response.addCookie(keyCookie);
         return likes;
     }
 
