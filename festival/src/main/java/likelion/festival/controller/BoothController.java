@@ -73,7 +73,11 @@ public class BoothController {
     }
 
     @PostMapping("/{id}/likes")
-    public LikesResponseDto likeCreate(@PathVariable Long id, HttpServletResponse response){
+    public LikesResponseDto likeCreate(@PathVariable Long id, HttpServletRequest request, HttpServletResponse response){
+        Optional<Cookie> boothCookie = likesService.findBoothCookie(request, id);
+        if(boothCookie.isPresent()){
+            throw new IllegalArgumentException("이미 쿠키 있음");
+        }
         LikesResponseDto likes = likesService.create(id);
         response.setHeader("Set-Cookie",id.toString() + "=" + likes.getCookieKey()
                 + ";Max-Age=432000;Path=/;SameSite=None;");
