@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.util.CookieGenerator;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -79,8 +78,10 @@ public class BoothController {
             throw new IllegalArgumentException("이미 쿠키 있음");
         }
         LikesResponseDto likes = likesService.create(id);
-        response.setHeader("Set-Cookie",id.toString() + "=" + likes.getCookieKey()
-                + ";Max-Age=432000;Path=/;SameSite=None;");
+        Cookie keyCokkie = new Cookie(id.toString(), likes.getCookieKey());
+        keyCokkie.setMaxAge(7*60*60*24);
+        keyCokkie.setPath("/");
+        response.addCookie(keyCokkie);
         return likes;
     }
 
