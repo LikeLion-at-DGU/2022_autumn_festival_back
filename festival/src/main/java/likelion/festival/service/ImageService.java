@@ -64,7 +64,7 @@ public class ImageService {
             }
         }
         String imagePath = savePath + "/static/" + servFilename + ".jpg";
-        String responsePath = "/static/" + servFilename + ".jpg";
+        String responsePath = "http://www.dgu-letsgitrit/static/" + servFilename + ".jpg";
         image.transferTo(new File(imagePath));
         ImageDto imageDto = new ImageDto();
         imageDto.setOriginFileName(origFilename);
