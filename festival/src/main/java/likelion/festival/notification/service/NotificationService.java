@@ -22,28 +22,25 @@ public class NotificationService {
   private final NotificationRepository notificationRepository;
 
   public NotificationDto readNotification(Long id) {
-    Optional<Notification> notificationOptional = notificationRepository.findById(id);
-    if (notificationOptional.isEmpty()) {
-      throw new WrongNotificationId();
-    }
+    Notification notification = notificationRepository.findById(id)
+        .orElseThrow(() -> new WrongNotificationId());
 
-    Notification notification = notificationOptional.get();
     NotificationDto notificationDto = toDto(notification);
 
     return notificationDto;
   }
 
   public List<NotificationDto> readNotificationAll(NotificationType notificationType) {
-    ArrayList<NotificationDto> notificationDtos = new ArrayList<>();
+    List<NotificationDto> notificationDtos = new ArrayList<>();
     if (notificationType == null) {
-      ArrayList<Notification> notifications = notificationRepository.findAll();
+      List<Notification> notifications = notificationRepository.findAll();
       for (Notification notification : notifications) {
         NotificationDto notificationDto = toDto(notification);
         notificationDtos.add(notificationDto);
       }
       return notificationDtos;
     }
-    ArrayList<Notification> notifications = notificationRepository.findByNotificationType(
+    List<Notification> notifications = notificationRepository.findByNotificationType(
         notificationType);
     for (Notification notification : notifications) {
       NotificationDto notificationDto = toDto(notification);
@@ -65,11 +62,10 @@ public class NotificationService {
 
   @Transactional
   public Notification updateNotification(Long id, NotificationDto notificationDto) {
-    Optional<Notification> notificationOptional = notificationRepository.findById(id);
-    if (notificationOptional.isEmpty()) {
-      throw new WrongNotificationId();
-    }
-    Notification notification = notificationOptional.get();
+    Notification notification = notificationRepository.findById(id)
+        .orElseThrow(() -> new WrongNotificationId());
+
+
     notification.updateNotification(notificationDto.getTitle(), notificationDto.getWriter(),
         notificationDto.getContent(), notificationDto.getNotificationType(),
         notificationDto.getImages());
