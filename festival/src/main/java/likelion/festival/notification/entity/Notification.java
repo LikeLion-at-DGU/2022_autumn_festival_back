@@ -17,7 +17,6 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @Builder
 @Entity
-@Getter
 public class Notification extends BaseEntity {
 
   @Id
