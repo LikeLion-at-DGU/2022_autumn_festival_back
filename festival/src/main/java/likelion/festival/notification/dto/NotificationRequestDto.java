@@ -1,6 +1,7 @@
 package likelion.festival.notification.dto;
 
 import likelion.festival.image.entity.Image;
+import likelion.festival.notification.entity.Notification;
 import likelion.festival.notification.entity.NotificationType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class NotificationDto {
+public class NotificationRequestDto {
 
   private Long id;
   private String title;
@@ -27,5 +28,17 @@ public class NotificationDto {
   @LastModifiedDate
   private LocalDateTime modifiedDateTime;
   private List<Image> images;
+
+  public Notification toEntity(NotificationRequestDto notificationRequestDto) {
+    Notification build = Notification.builder()
+        .id(notificationRequestDto.getId())
+        .title(notificationRequestDto.getTitle())
+        .writer(notificationRequestDto.getWriter())
+        .content(notificationRequestDto.getContent())
+        .notificationType(notificationRequestDto.getNotificationType())
+        .images(notificationRequestDto.getImages())
+        .build();
+    return build;
+  }
 
 }
