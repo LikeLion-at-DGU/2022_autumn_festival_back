@@ -1,5 +1,6 @@
 package likelion.festival.notification.service;
 
+import java.util.stream.Collectors;
 import likelion.festival.notification.dto.NotificationRequestDto;
 import likelion.festival.notification.dto.NotificationResponseDto;
 import likelion.festival.notification.entity.Notification;
@@ -21,36 +22,21 @@ public class NotificationService {
   private final NotificationRepository notificationRepository;
 
   public NotificationResponseDto readNotification(Long id) {
-    Notification notification = notificationRepository.findById(id)
-        .orElseThrow(() -> new WrongNotificationId());
-
-    NotificationResponseDto notificationResponseDto = NotificationResponseDto.toDto(notification);
-
+    Notification notification = findNotification(id);
+    NotificationResponseDto notificationResponseDto = notification.toDto();
     return notificationResponseDto;
   }
 
   public List<NotificationResponseDto> readNotificationAll(NotificationType notificationType) {
-    List<NotificationResponseDto> notificationResponseDtos = new ArrayList<>();
-    if (notificationType == null) {
-      List<Notification> notifications = notificationRepository.findAll();
-      for (Notification notification : notifications) {
-        NotificationResponseDto notificationResponseDto = NotificationResponseDto.toDto(notification);
-        notificationResponseDtos.add(notificationResponseDto);
-      }
-      return notificationResponseDtos;
-    }
-    List<Notification> notifications = notificationRepository.findByNotificationType(
-        notificationType);
-    for (Notification notification : notifications) {
-      NotificationResponseDto notificationResponseDto = NotificationResponseDto.toDto(notification);
-      notificationResponseDtos.add(notificationResponseDto);
-    }
-    return notificationResponseDtos;
+    List<Notification> notifications = findNotifications(notificationType);
+    return notifications.stream()
+        .map(notification -> notification.toDto())
+        .collect(Collectors.toList());
   }
 
   @Transactional
   public Notification createNotification(NotificationRequestDto notificationRequestDto) {
-    Notification notification = notificationRequestDto.toEntity(notificationRequestDto);
+    Notification notification = notificationRequestDto.toEntity();
     return notificationRepository.save(notification);
   }
 
@@ -61,13 +47,19 @@ public class NotificationService {
 
   @Transactional
   public Notification updateNotification(Long id, NotificationRequestDto notificationRequestDto) {
-    Notification notification = notificationRepository.findById(id)
-        .orElseThrow(() -> new WrongNotificationId());
-
-
-    notification.updateNotification(notificationRequestDto.getTitle(), notificationRequestDto.getWriter(),
-        notificationRequestDto.getContent(), notificationRequestDto.getNotificationType(),
-        notificationRequestDto.getImages());
+    Notification notification = findNotification(id);
+    Notification newNotification = notificationRequestDto.toEntity();
+    notification.updateNotification(newNotification);
     return notificationRepository.save(notification);
+  }
+
+  private Notification findNotification(Long id){
+    return notificationRepository.findById(id).orElseThrow(() -> new WrongNotificationId());
+  }
+  private List<Notification> findNotifications(NotificationType notificationType){
+    if (notificationType == null) {
+      return notificationRepository.findAll();
+    }
+    return notificationRepository.findByNotificationType(notificationType);
   }
 }
