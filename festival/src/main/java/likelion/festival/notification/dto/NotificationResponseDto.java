@@ -29,18 +29,4 @@ public class NotificationResponseDto {
   private LocalDateTime modifiedDateTime;
   private List<Image> images;
 
-  public static NotificationResponseDto toDto(Notification notification) {
-    NotificationResponseDto build = NotificationResponseDto.builder()
-        .id(notification.getId())
-        .title(notification.getTitle())
-        .writer(notification.getWriter())
-        .content(notification.getContent())
-        .notificationType(notification.getNotificationType())
-        .images(notification.getImages())
-        .createdDateTime(notification.getCreatedDateTime())
-        .modifiedDateTime(notification.getModifiedDateTime())
-        .build();
-    return build;
-  }
-
 }
