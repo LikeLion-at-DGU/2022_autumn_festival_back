@@ -20,7 +20,6 @@ import java.util.List;
 public class NotificationController {
 
   private final NotificationService notificationService;
-  private final ImageService imageService;
 
   @GetMapping("{id}")
   public NotificationResponseDto readNotification(@PathVariable Long id) {
@@ -28,33 +27,24 @@ public class NotificationController {
   }
 
   @GetMapping
-  public ResponseEntity readNotificationAll(
-      @RequestParam(required = false) NotificationType notificationType) {
+  public ResponseEntity readNotificationAll(@RequestParam(required = false) NotificationType notificationType) {
     return ResponseEntity.ok(notificationService.readNotificationAll(notificationType));
   }
 
   @PostMapping
-  public Integer createNotification(
-      @RequestPart(value = "imgList", required = false) List<MultipartFile> imgList,
-      @RequestParam(value = "notificationRequestDto", required = false) NotificationRequestDto notificationRequestDto) {
+  public Integer createNotification(@RequestBody NotificationRequestDto notificationRequestDto) {
     Notification notification = notificationService.createNotification(notificationRequestDto);
-    if (imgList == null) {
-      return HttpStatus.OK.value();
-    }
-    imageService.saveNotificationImage(imgList, notification);
     return HttpStatus.OK.value();
   }
 
   @DeleteMapping("{id}")
-  public String deleteNotification(@PathVariable Long id) {
+  public HttpStatus deleteNotification(@PathVariable Long id) {
     notificationService.deleteNotification(id);
-    return "Ok";
+    return HttpStatus.NO_CONTENT;
   }
 
   @PutMapping("{id}")
-  public ResponseEntity<Notification> updateNotification(
-      @RequestPart(value = "imgList", required = false) List<MultipartFile> imgList,
-      @RequestParam(value = "notificationRequestDto", required = false) NotificationRequestDto notificationRequestDto,
+  public ResponseEntity<Notification> updateNotification(@RequestBody NotificationRequestDto notificationRequestDto,
       @PathVariable Long id) {
     return ResponseEntity.ok(notificationService.updateNotification(id, notificationRequestDto));
   }
