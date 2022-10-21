@@ -29,14 +29,14 @@ public class NotificationRequestDto {
   private LocalDateTime modifiedDateTime;
   private List<Image> images;
 
-  public Notification toEntity(NotificationRequestDto notificationRequestDto) {
+  public Notification  toEntity() {
     Notification build = Notification.builder()
-        .id(notificationRequestDto.getId())
-        .title(notificationRequestDto.getTitle())
-        .writer(notificationRequestDto.getWriter())
-        .content(notificationRequestDto.getContent())
-        .notificationType(notificationRequestDto.getNotificationType())
-        .images(notificationRequestDto.getImages())
+        .id(id)
+        .title(title)
+        .writer(writer)
+        .content(content)
+        .notificationType(notificationType)
+        .images(images)
         .build();
     return build;
   }
