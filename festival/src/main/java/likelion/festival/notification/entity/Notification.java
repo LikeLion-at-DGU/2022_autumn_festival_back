@@ -3,9 +3,9 @@ package likelion.festival.notification.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import likelion.festival.global.baseEntity.BaseEntity;
 import likelion.festival.image.entity.Image;
+import likelion.festival.notification.dto.NotificationResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -35,11 +35,26 @@ public class Notification extends BaseEntity {
   @JsonIgnore
   private List<Image> images = new ArrayList<>();
 
-  public void updateNotification(String title, String writer, String content,NotificationType notificationType, List<Image> images) {
-    this.title = title;
-    this.writer = writer;
-    this.content = content;
-    this.notificationType = notificationType;
-    this.images = images;
+  public void updateNotification(Notification notification) {
+    this.title = notification.title;
+    this.writer = notification.writer;
+    this.content = notification.content;
+    this.notificationType = notification.notificationType;
+    this.images = notification.images;
   }
+
+  public NotificationResponseDto toDto(){
+    NotificationResponseDto build = NotificationResponseDto.builder()
+        .id(id)
+        .title(title)
+        .writer(writer)
+        .content(content)
+        .notificationType(notificationType)
+        .images(images)
+        .createdDateTime(getCreatedDateTime())
+        .modifiedDateTime(getModifiedDateTime())
+        .build();
+    return build;
+  }
+
 }
