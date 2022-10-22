@@ -7,7 +7,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @EnableJpaAuditing
-@PropertySource("classpath:/application-path.yml")
 @SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 public class FestivalApplication {
 
